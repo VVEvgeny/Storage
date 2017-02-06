@@ -43,12 +43,31 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="1.Generating\3.BuilderTestView.cs" />
+    <Compile Include="1.Generating\3.Builder.cs" />
+    <Compile Include="1.Generating\2.FactoryMethodTestView.cs" />
+    <Compile Include="1.Generating\2.FactoryMethod.cs" />
+    <Compile Include="1.Generating\1.SingletonTestView.cs" />
+    <Compile Include="2.Behavioural\1.ObserverTestView.cs" />
+    <Compile Include="2.Behavioural\1.Observer.cs" />
+    <Compile Include="3.Structural\5.CompositeTestView.cs" />
+    <Compile Include="3.Structural\5.Composite.cs" />
+    <Compile Include="3.Structural\4.ProxyTestView.cs" />
+    <Compile Include="3.Structural\4.Proxy.cs" />
+    <Compile Include="3.Structural\3.FacadeTestView.cs" />
+    <Compile Include="3.Structural\3.Facade.cs" />
+    <Compile Include="3.Structural\2.AdapterTestView.cs" />
+    <Compile Include="3.Structural\2.Adapter.cs" />
+    <Compile Include="3.Structural\1.DecoratorTestView.cs" />
+    <Compile Include="3.Structural\1.Decorator.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="1.Generating\1.Singleton.cs" />
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
