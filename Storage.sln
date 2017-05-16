@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Principles", "Principles\Pr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PatternsTests", "PatternsTests\PatternsTests.csproj", "{8CC0DDC4-ADBD-414A-BD2C-156411CA26FA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeContracts", "CodeContracts\CodeContracts.csproj", "{E2134676-DEB4-45E6-80EC-AE1113D9C013}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{8CC0DDC4-ADBD-414A-BD2C-156411CA26FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8CC0DDC4-ADBD-414A-BD2C-156411CA26FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8CC0DDC4-ADBD-414A-BD2C-156411CA26FA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E2134676-DEB4-45E6-80EC-AE1113D9C013}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E2134676-DEB4-45E6-80EC-AE1113D9C013}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E2134676-DEB4-45E6-80EC-AE1113D9C013}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E2134676-DEB4-45E6-80EC-AE1113D9C013}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
