@@ -43,12 +43,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="1.Generating\5.AbstractFactoryTestView.cs" />
     <Compile Include="1.Generating\4.PrototypeTestView.cs" />
     <Compile Include="1.Generating\3.BuilderTestView.cs" />
     <Compile Include="1.Generating\3.Builder.cs" />
     <Compile Include="1.Generating\2.FactoryMethodTestView.cs" />
     <Compile Include="1.Generating\2.FactoryMethod.cs" />
     <Compile Include="1.Generating\1.SingletonTestView.cs" />
+    <Compile Include="1.Generating\5.AbstractFactory.cs" />
     <Compile Include="2.Behavioural\1.ObserverTestView.cs" />
     <Compile Include="2.Behavioural\1.Observer.cs" />
     <Compile Include="3.Structural\5.CompositeTestView.cs" />
