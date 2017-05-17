@@ -43,6 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="1.Generating\4.PrototypeTestView.cs" />
     <Compile Include="1.Generating\3.BuilderTestView.cs" />
     <Compile Include="1.Generating\3.Builder.cs" />
     <Compile Include="1.Generating\2.FactoryMethodTestView.cs" />
@@ -65,6 +66,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="1.Generating\1.Singleton.cs" />
+    <Compile Include="1.Generating\4.Prototype.cs" />
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup />

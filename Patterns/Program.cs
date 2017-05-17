@@ -2,7 +2,6 @@
 
 //Generating:
 //-AbstractFactory
-//-Prototype
 
 //Behavioural:
 //-Strategy
@@ -48,6 +47,7 @@ namespace vvevgeny_storage
         Facade,
         Proxy,
         Composite,
+        Prototype,
         Unknown = int.MaxValue
     }
     public static class ModesExtension
@@ -116,6 +116,9 @@ namespace vvevgeny_storage
                         break;
                     case Modes.Composite:
                         testView = new CompositeTestView();
+                        break;
+                    case Modes.Prototype:
+                        testView = new PrototypeClassTestView();
                         break;
                     default:
                         //throw new ArgumentOutOfRangeException();
