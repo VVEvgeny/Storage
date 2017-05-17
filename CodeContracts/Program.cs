@@ -1,11 +1,11 @@
-﻿using System.Diagnostics.Contracts;
+﻿using System;
+using System.Diagnostics.Contracts;
 
 namespace CodeContracts
 {
-    class Program
+    public class Program
     {
-        private static object o = null;
-        private static int TestMethod()
+        public static int TestMethod(object o = null)
         {
             //ErrorInPreConditions
             Contract.Requires(o != null);
@@ -16,12 +16,17 @@ namespace CodeContracts
             //ErrorInReturn
             Contract.Ensures(Contract.Result<int>() > 5);
 
-            return (int?) o ?? 0;
+            return o as int? ?? 0;
         }
         
         static void Main(string[] args)
         {
-            //o = 5;
+            Contract.ContractFailed += (sender, e) =>
+            {
+                Console.WriteLine(e.Message);
+                e.SetHandled();
+            };
+
             TestMethod();
         }
     }

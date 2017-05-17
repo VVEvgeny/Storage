@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PatternsTests", "PatternsTe
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeContracts", "CodeContracts\CodeContracts.csproj", "{E2134676-DEB4-45E6-80EC-AE1113D9C013}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeContractsTests", "CodeContractsTests\CodeContractsTests.csproj", "{3C849F1C-9FAF-478A-BB94-D20873A5A01C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{E2134676-DEB4-45E6-80EC-AE1113D9C013}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E2134676-DEB4-45E6-80EC-AE1113D9C013}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E2134676-DEB4-45E6-80EC-AE1113D9C013}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3C849F1C-9FAF-478A-BB94-D20873A5A01C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3C849F1C-9FAF-478A-BB94-D20873A5A01C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3C849F1C-9FAF-478A-BB94-D20873A5A01C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3C849F1C-9FAF-478A-BB94-D20873A5A01C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
