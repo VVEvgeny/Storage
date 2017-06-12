@@ -43,12 +43,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="1.SingleResponsibilityPrinciple\SingleResponsibilityPrinciple.cs" />
+    <Compile Include="2.OpenClosedPrinciple\OpenClosedPrinciple.cs" />
+    <Compile Include="3.LiskovSubstitutionPrinciple\LiskovSubstitutionPrinciple.cs" />
+    <Compile Include="4.InterfaceSegregationPrinciple\InterfaceSegregationPrinciple.cs" />
+    <Compile Include="5.DependencyInversionPrinciple\DependencyInversionPrinciple.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
