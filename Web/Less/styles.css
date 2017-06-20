@@ -1,0 +1,82 @@
+.item {
+  width: 100px;
+  height: 100px;
+  text-align: center;
+  font-size: 40px;
+}
+.item.green {
+  background-color: green;
+  color: red;
+}
+h1,
+div {
+  color: #ff0000;
+  font-size: 40px;
+  border: 3.33333333px dashed;
+  border-bottom-color: #ff8080;
+  border-top-color: #ff0000;
+  border-left-color: #ff6a00;
+}
+h2 {
+  color: #00ff00;
+  font-size: 30px;
+  border: 2.5px dashed;
+  border-bottom-color: #009900;
+  border-top-color: #20df20;
+  border-left-color: #ff006a;
+}
+p {
+  color: #ff0000;
+}
+article header {
+  color: red;
+}
+article div a {
+  font-size: 26px;
+}
+article div a:hover {
+  color: green;
+}
+article div a i {
+  font-size: 16px;
+}
+.button__add {
+  background-color: green;
+}
+.button__rem {
+  background-color: red;
+}
+header,
+div {
+  color: #ccc;
+}
+div {
+  font-size: 120%;
+}
+body {
+  display: table;
+  content: " ";
+  clear: both;
+}
+article header {
+  border-bottom: 3px solid red;
+}
+article div p {
+  border-bottom: 1px solid green;
+}
+article header {
+  box-shadow: 2px 2px 2px #ccc;
+}
+article {
+  transform: scale(0.7) rotate(45deg);
+}
+.item {
+  width: 100px;
+  height: 100px;
+  text-align: center;
+  font-size: 40px;
+}
+.item.green {
+  background-color: green;
+  color: red;
+}

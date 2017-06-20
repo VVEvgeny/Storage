@@ -1,0 +1,137 @@
+@import url("styles2.less");
+
+@mainColor:rgb(255,0,0);
+@subColor:rgb(0,255,0);
+@mainProp:20px;
+
+h1
+{
+  color:@mainColor;
+  font-size:@mainProp+20px;
+  border:@mainProp/6 dashed;
+  border-bottom-color:lighten(@mainColor,25%);
+  border-top-color:saturate(@mainColor,25%);
+  border-left-color:spin(@mainColor,25%);
+}
+h2
+{
+  color:@subColor;
+  font-size:@mainProp+10px;
+  border:@mainProp/8 dashed;
+  border-bottom-color:darken(@subColor,20%);
+  border-top-color:desaturate(@subColor,25%);
+  border-left-color:spin(@mainColor,-25%);
+}
+p
+{
+  color:@mainColor;
+}
+
+article
+{
+  header
+  {
+    color:red;
+  }
+  div
+  {
+    p{}
+	a
+	{
+	  &:hover{color:green;}
+	  //&:visited{color:red;}
+	  font-size: 26px;
+	  i{font-size: 16px;}
+	}
+  }
+}
+//for classes = .button__add && .button__rem
+.button
+{
+  &__add{background-color:green;}
+  &__rem{background-color:red;}
+}
+
+header{color:#ccc;}
+div
+{
+  &:extend(header);
+  &:extend(h1);
+  font-size:120%;
+}
+
+//mixin
+.clearfix()
+{
+  display: table;
+  content:" ";
+  clear: both;
+}
+body
+{
+ .clearfix();
+}
+
+.myBorder(@color,@size:1px)
+{
+  border-bottom: @size solid @color;
+}
+article header
+{
+  .myBorder(red,3px);
+}
+article div p
+{
+  .myBorder(green);
+}
+
+.myBoxShadow(@x,@y,@b:2px,@color:#ccc)
+{
+  box-shadow: @arguments;
+}
+article header
+{
+  .myBoxShadow(2px,2px);
+}
+
+//+_ - не перобределять а добавить
+.scale(@scale)
+{
+  transform+_: scale(@scale)
+}
+.rotate(@angle)
+{
+  transform+_: rotate(@angle);
+}
+article
+{
+  .scale(0.7);
+  .rotate(45deg);
+}
+
+.myitemColor(@value) when(@value=red)
+{
+  background-color:red;
+  color:green;
+}
+.myItemColor(@value) when(@value=green)
+{
+  background-color:green;
+  color:red;
+}
+
+.item
+{
+  width: 100px; height: 100px; text-align:center;font-size:40px;
+  //float: left;
+  &.red
+  {
+    .myItemColor(red);
+  }
+  &.green
+  {
+    .myItemColor(green);
+  }
+}
+
+
