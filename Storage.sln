@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25123.0
+# Visual Studio 15
+VisualStudioVersion = 15.0.26403.7
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Patterns", "Patterns\Patterns.csproj", "{BD33A3D6-93D4-448D-AF46-825A4749CF61}"
 EndProject
@@ -14,6 +14,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeContractsTests", "CodeContractsTests\CodeContractsTests.csproj", "{3C849F1C-9FAF-478A-BB94-D20873A5A01C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeCompilation", "CodeCompilation\CodeCompilation.csproj", "{00619D98-5F4D-43FB-ADF0-7E7D52E39743}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MongoDBExample", "MongoDBExample\mongodb\MongoDBExample.csproj", "{FF4D8BC8-8F02-4E6C-BC5F-C005143C5705}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +47,10 @@ Global
 		{00619D98-5F4D-43FB-ADF0-7E7D52E39743}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{00619D98-5F4D-43FB-ADF0-7E7D52E39743}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{00619D98-5F4D-43FB-ADF0-7E7D52E39743}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FF4D8BC8-8F02-4E6C-BC5F-C005143C5705}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FF4D8BC8-8F02-4E6C-BC5F-C005143C5705}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FF4D8BC8-8F02-4E6C-BC5F-C005143C5705}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FF4D8BC8-8F02-4E6C-BC5F-C005143C5705}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

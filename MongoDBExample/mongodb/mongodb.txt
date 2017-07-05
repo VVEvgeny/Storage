@@ -1,0 +1,159 @@
+﻿"c:\Program Files\MongoDB\Server\3.4\bin\mongod.exe" --dbpath d:\MongoDBTest
+
+"c:\Program Files\MongoDB\Server\3.4\bin\mongo.exe"
+use test
+db.users.save( { name: "Tom" } )
+db.users.find()
+
+
+show dbs
+db.stats()
+
+db.users.renameCollection("новое_название")
+db.createCollection("accounts")
+db.createCollection("profile", {capped:true, size:9500})
+db.createCollection("profile", {capped:true, size:9500, max: 150})
+
+поиски
+db.users.find().pretty()
+db.users.find({name: "Tom"})
+db.users.find({name: "Tom", age: 32})
+
+вывод нужных полей
+db.users.find({name: "Tom"}, {age: 1})
+db.users.find({name: "Tom"}, {age: true, _id: false})
+db.users.find({}, {age: 1, _id: 0})
+
+db.users.insert({"name": "Alex", "age": 28, company: {"name":"microsoft", "country":"USA"}})
+db.users.find({"company.name": "microsoft"})
+
+Использование JavaScript
+fn = function() { return this.name=="Tom"; }
+db.users.find(fn)
+db.users.find("this.name=='Tom'")
+
+регулярки..
+db.users.find({name:/T\w+/i})
+
+Настройка запросов и сортировка
+db.users.find().limit(3)
+db.users.find().skip(3)
+db.users.find().sort({name: 1})
+db.users.find().sort({name: 1}).skip(3).limit(3)
+
+
+db.users.find().sort({ $natural: -1 }).limit(5)
+$natural - документы передаются в том порядке, в каком они были добавлены в коллекцию, либо в обратном порядке
+
+ограничение массива
+db.users.insert({"name": "Tom", "age": "32", languages: ["english", "german"]})
+db.users.find ({name: "Tom"}, {languages: {$slice : 1}})
+db.users.find ({name: "Tom"}, {languages: {$slice : -1}});
+
+var cursor = db.users.find();null;
+while(cursor.hasNext()){ obj = cursor.next(); print(obj["name"]); }
+cursor.forEach(function(obj){ print(obj.name); })
+
+db.users.count()
+db.users.distinct("name")
+
+db.users.group ({key: {name : true}, initial: {total : 0},
+reduce : function (items,prev){prev.total += 1}})
+
+$eq (равно)
+$gt (больше чем)
+$lt (меньше чем)
+$gte (больше или равно)
+$lte (меньше или равно)
+$ne не соответствующие некоторому условию
+
+db.users.find ({age: {$lt : 30}})
+db.users.find ({age: {$gt : 30, $lt: 50}})
+
+Поиск по массивам и операторы $in, $nin, $all
+$in определяет массив возможных выражений и ищет те ключи, значение которых имеется в массиве
+$nin - он определяет массив возможных выражений и ищет те ключи, значение которых отсутствует в этом массиве:
+$all похож на $in: он также определяет массив возможных выражений, но требует, чтобы документы имели весь определяемый набор выражений. Например, следующий запрос не вернет нам ни одного результата:
+
+db.users.find ({age: {$in : [22, 32]}})
+db.users.find ({languages: {$all : ["english", "french"]}})
+
+
+$elemMatch позволяет выбрать документы, в которых массивы содержат элементы, попадающие под определенные условия
+db.grades.insertMany([{student: "Tom", courses:[{name: "Java", grade: 5}, {name: "MongoDB", grade: 4}]}, 
+{student: "Alice", courses:[{name: "C++", grade: 3}, {name: "MongoDB", grade: 5}]}])
+
+db.grades.find({courses: {$elemMatch: {name: "MongoDB", grade: {$gt: 3}}}})
+
+db.users.find ({languages: {$size:2}})
+db.users.find ({company: {$exists:true}})
+
+db.users.find ({age: {$type:"string"}})
+db.users.find ({age: {$type:"number"}})
+
+$regex задает регулярное выражение, которому должно соответствовать значение поля. Например, пусть поле name обязательно имеет букву "b"
+db.users.find ({name: {$regex:"b"}})
+
+$or представляет логическую операцию ИЛИ и определяет набор пар ключ-значение, которые должны иметься в документе
+db.users.find ({$or : [{name: "Tom"}, {age: 22}]})
+
+$and представляет логическую операцию И (логическое умножение) и определяет набор критериев, которым обязателньо должен соответствовать документ
+db.users.find ({$and : [{name: "Tom"}, {age: 32}]})
+
+
+db.users.save({name: "Eugene", age : 29, languages: ["english", "german", "spanish"]})
+db.users.update({name : "Tom"}, {name: "Tom", age : 25}, {upsert: true})
+db.users.update({name : "Tom", age: 29}, {$set: {age : 30}})
+db.users.update({name : "Tom", age: 29}, {$set: {salary : 300}})
+
+для всех в выборке
+db.users.update({name : "Tom"}, {$set: {name: "Tom", age : 25}}, {multi:true})
+
+удаление
+db.users.update({name : "Tom"}, {$unset: {salary: 1}})
+db.users.update({name : "Tom"}, {$unset: {salary: 1, age: 1}})
+db.users.updateOne({name : "Tom", age: 29}, {$set: {salary : 360}})
+db.users.updateMany({name : "Tom"}, {$set: {salary : 560}})
+
+для масивов
+db.users.updateOne({name : "Tom"}, {$push: {languages: "russian"}})
+db.users.update({name : "Tom"}, {$push: {languages: {$each: ["russian", "spanish", "italian"]}}})
+db.users.update({name : "Tom"}, {$push: {languages: {$each: ["german", "spanish", "italian"], $position:1, $slice:5}}})
+db.users.update({name : "Tom"}, {$addToSet: {languages: "russian"}})
+db.users.update({name : "Tom"}, {$pop: {languages: 1}})
+db.users.update({name : "Tom"}, {$pop: {languages: -1}})
+
+db.users.remove({name : "Tom"})
+
+вся коллекция
+db.users.remove({})
+db.users.drop()
+
+база
+db.dropDatabase()
+
+
+ссылки
+db.companies.insert({"_id" : "microsoft", year: 1974})
+db.users.insert({name: "Tom", age: 28, company: "microsoft"})
+user = db.users.findOne()
+db.companies.findOne({_id: user.company})
+
+Автоматическое связывание
+apple=({"name" : "apple", "year": 1976})
+db.companies.save(apple)
+
+steve = ({"name": "Steve", "age": 25, company: new DBRef('companies', apple._id)})
+db.users.save(steve)
+db.companies.findOne({_id: steve.company.$id})
+
+индексы
+db.users.createIndex({"name" : 1})
+db.users.createIndex({"name" : 1}, {"unique" : true})
+db.users.createIndex({"name" : 1, "age" : 1}, {"unique" : true})
+
+db.users.getIndexes()
+db.users.dropIndex("name_1")
+
+
+ 
