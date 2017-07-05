@@ -1,0 +1,70 @@
+@import 'fragment.scss';
+
+body {
+    //background-color: $main_color;
+    font-size: $main_fon_size;
+
+    h3 {
+        background-color: $h3_color;
+        font-size: $h3_size;
+    }
+    //главнее чем не вложенного
+    h2 {
+        background-color: $h3_color;
+        font-size: $h3_size + 2;
+    }
+}
+h2 {
+    background-color: $h3_color;
+    font-size: $h3_size/2;
+}
+
+
+@mixin box-shadow($h_length,$v_length,$blur,$spread,$color) {
+    -webkit-box-shadow: $h_length,$v_length,$blur,$spread,$color;
+    -moz-box-shadow: $h_length,$v_length,$blur,$spread,$color;
+    box-shadow: $h_length,$v_length,$blur,$spread,$color;
+}
+h4{
+    @include box-shadow(10px,10px,5px,0px,#fff);
+}
+h5 {
+    @include box-shadow(5px,5px,2px,0px,#fff);
+}
+
+.message{
+    font-size:25px;
+    line-height:22px;
+    font-weight: bold;
+    color:#ccc;
+}
+.success{
+    @extend .message;
+    color:green;
+}
+.warning {
+    @extend .message;
+    color: yellow;
+}
+.danger {
+    @extend .message;
+    color: red;
+}
+
+
+//https://www.youtube.com/watch?v=2EVq3Sa2xug&list=PLXyJ0pcaaZmAIYXSmv0ggeHlT3Cj9cq3T&index=6
+header {
+    background-color: lighten($main_color,50%);
+    border: 1px solid darken($main_color,10%);
+    color: $main_color;
+}
+
+$type:asds;
+$myparacolor: if($type=="asd",red,green);
+
+#mypara {
+    font-size: 50px;
+    &:hover {
+        color: $myparacolor;
+    }
+}

@@ -1,0 +1,48 @@
+﻿body {
+  font-size: 16px; }
+  body h3 {
+    background-color: #ff0000;
+    font-size: 48px; }
+  body h2 {
+    background-color: #ff0000;
+    font-size: 50px; }
+
+h2 {
+  background-color: #ff0000;
+  font-size: 24px; }
+
+h4 {
+  -webkit-box-shadow: 10px, 10px, 5px, 0px, #fff;
+  -moz-box-shadow: 10px, 10px, 5px, 0px, #fff;
+  box-shadow: 10px, 10px, 5px, 0px, #fff; }
+
+h5 {
+  -webkit-box-shadow: 5px, 5px, 2px, 0px, #fff;
+  -moz-box-shadow: 5px, 5px, 2px, 0px, #fff;
+  box-shadow: 5px, 5px, 2px, 0px, #fff; }
+
+.message, .success, .warning, .danger {
+  font-size: 25px;
+  line-height: 22px;
+  font-weight: bold;
+  color: #ccc; }
+
+.success {
+  color: green; }
+
+.warning {
+  color: yellow; }
+
+.danger {
+  color: red; }
+
+header {
+  background-color: #e8eef8;
+  border: 1px solid #274d87;
+  color: #3264af; }
+
+#mypara {
+  font-size: 50px; }
+  #mypara:hover {
+    color: green; }
+

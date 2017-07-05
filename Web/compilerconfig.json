@@ -1,0 +1,10 @@
+﻿[
+  {
+    "outputFile": "Sass/styles.css",
+    "inputFile": "Sass/styles.scss"
+  },
+  {
+    "outputFile": "Sass/fragment.css",
+    "inputFile": "Sass/fragment.scss"
+  }
+]
