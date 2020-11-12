@@ -28,6 +28,7 @@ namespace Asyncs
             try
             {
                 _cts = new CancellationTokenSource();
+                //_cts.CancelAfter(TimeSpan.FromSeconds(1));
                 var token = _cts.Token;
 
                 var someAsyncWork = Task.Delay(TimeSpan.FromSeconds(10), token);
