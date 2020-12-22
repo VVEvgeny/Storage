@@ -23,6 +23,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MixTests", "MixTests\MixTes
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Asyncs", "Asyncs\Asyncs.csproj", "{BC62984C-194D-44D8-B2D0-5BF1054CFC56}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XMLTrackEditorTCX", "XMLTrackEditorTCX\XMLTrackEditorTCX.csproj", "{63A03F27-FA02-4336-A83D-04309C450F6C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -69,6 +71,10 @@ Global
 		{BC62984C-194D-44D8-B2D0-5BF1054CFC56}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BC62984C-194D-44D8-B2D0-5BF1054CFC56}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BC62984C-194D-44D8-B2D0-5BF1054CFC56}.Release|Any CPU.Build.0 = Release|Any CPU
+		{63A03F27-FA02-4336-A83D-04309C450F6C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{63A03F27-FA02-4336-A83D-04309C450F6C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{63A03F27-FA02-4336-A83D-04309C450F6C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{63A03F27-FA02-4336-A83D-04309C450F6C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
