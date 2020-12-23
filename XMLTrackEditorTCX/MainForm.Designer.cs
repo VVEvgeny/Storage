@@ -36,18 +36,19 @@
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.button1 = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.textBoxTime = new System.Windows.Forms.TextBox();
-            this.button2 = new System.Windows.Forms.Button();
-            this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.label2 = new System.Windows.Forms.Label();
-            this.textBoxLatitude = new System.Windows.Forms.TextBox();
-            this.textBoxLongitude = new System.Windows.Forms.TextBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.textBoxAltitude = new System.Windows.Forms.TextBox();
-            this.label5 = new System.Windows.Forms.Label();
             this.textBoxHeartRate = new System.Windows.Forms.TextBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.textBoxAltitude = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.textBoxLongitude = new System.Windows.Forms.TextBox();
+            this.textBoxLatitude = new System.Windows.Forms.TextBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.button2 = new System.Windows.Forms.Button();
+            this.textBoxTime = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.buttonToMap = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -151,31 +152,37 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Edit";
             // 
-            // label1
+            // textBoxHeartRate
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(7, 20);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(30, 13);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "Time";
+            this.textBoxHeartRate.Location = new System.Drawing.Point(82, 144);
+            this.textBoxHeartRate.Name = "textBoxHeartRate";
+            this.textBoxHeartRate.Size = new System.Drawing.Size(181, 20);
+            this.textBoxHeartRate.TabIndex = 12;
             // 
-            // textBoxTime
+            // label5
             // 
-            this.textBoxTime.Location = new System.Drawing.Point(49, 16);
-            this.textBoxTime.Name = "textBoxTime";
-            this.textBoxTime.Size = new System.Drawing.Size(214, 20);
-            this.textBoxTime.TabIndex = 1;
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(11, 147);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(59, 13);
+            this.label5.TabIndex = 11;
+            this.label5.Text = "Heart Rate";
             // 
-            // button2
+            // textBoxAltitude
             // 
-            this.button2.Location = new System.Drawing.Point(87, 367);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 23);
-            this.button2.TabIndex = 5;
-            this.button2.Text = "Update";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.textBoxAltitude.Location = new System.Drawing.Point(82, 113);
+            this.textBoxAltitude.Name = "textBoxAltitude";
+            this.textBoxAltitude.Size = new System.Drawing.Size(181, 20);
+            this.textBoxAltitude.TabIndex = 10;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(16, 120);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(42, 13);
+            this.label4.TabIndex = 10;
+            this.label4.Text = "Altitude";
             // 
             // groupBox3
             // 
@@ -190,29 +197,6 @@
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Position";
             // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(6, 16);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(45, 13);
-            this.label2.TabIndex = 7;
-            this.label2.Text = "Latitude";
-            // 
-            // textBoxLatitude
-            // 
-            this.textBoxLatitude.Location = new System.Drawing.Point(66, 13);
-            this.textBoxLatitude.Name = "textBoxLatitude";
-            this.textBoxLatitude.Size = new System.Drawing.Size(181, 20);
-            this.textBoxLatitude.TabIndex = 7;
-            // 
-            // textBoxLongitude
-            // 
-            this.textBoxLongitude.Location = new System.Drawing.Point(66, 39);
-            this.textBoxLongitude.Name = "textBoxLongitude";
-            this.textBoxLongitude.Size = new System.Drawing.Size(181, 20);
-            this.textBoxLongitude.TabIndex = 8;
-            // 
             // label3
             // 
             this.label3.AutoSize = true;
@@ -222,49 +206,77 @@
             this.label3.TabIndex = 9;
             this.label3.Text = "Longitude";
             // 
-            // label4
+            // textBoxLongitude
             // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(16, 120);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(42, 13);
-            this.label4.TabIndex = 10;
-            this.label4.Text = "Altitude";
+            this.textBoxLongitude.Location = new System.Drawing.Point(66, 39);
+            this.textBoxLongitude.Name = "textBoxLongitude";
+            this.textBoxLongitude.Size = new System.Drawing.Size(181, 20);
+            this.textBoxLongitude.TabIndex = 8;
             // 
-            // textBoxAltitude
+            // textBoxLatitude
             // 
-            this.textBoxAltitude.Location = new System.Drawing.Point(82, 113);
-            this.textBoxAltitude.Name = "textBoxAltitude";
-            this.textBoxAltitude.Size = new System.Drawing.Size(181, 20);
-            this.textBoxAltitude.TabIndex = 10;
+            this.textBoxLatitude.Location = new System.Drawing.Point(66, 13);
+            this.textBoxLatitude.Name = "textBoxLatitude";
+            this.textBoxLatitude.Size = new System.Drawing.Size(181, 20);
+            this.textBoxLatitude.TabIndex = 7;
             // 
-            // label5
+            // label2
             // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(11, 147);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(59, 13);
-            this.label5.TabIndex = 11;
-            this.label5.Text = "Heart Rate";
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(6, 16);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(45, 13);
+            this.label2.TabIndex = 7;
+            this.label2.Text = "Latitude";
             // 
-            // textBoxHeartRate
+            // button2
             // 
-            this.textBoxHeartRate.Location = new System.Drawing.Point(82, 144);
-            this.textBoxHeartRate.Name = "textBoxHeartRate";
-            this.textBoxHeartRate.Size = new System.Drawing.Size(181, 20);
-            this.textBoxHeartRate.TabIndex = 12;
+            this.button2.Location = new System.Drawing.Point(87, 367);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(75, 23);
+            this.button2.TabIndex = 5;
+            this.button2.Text = "Update";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
-            // Form1
+            // textBoxTime
+            // 
+            this.textBoxTime.Location = new System.Drawing.Point(49, 16);
+            this.textBoxTime.Name = "textBoxTime";
+            this.textBoxTime.Size = new System.Drawing.Size(214, 20);
+            this.textBoxTime.TabIndex = 1;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(7, 20);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(30, 13);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "Time";
+            // 
+            // buttonToMap
+            // 
+            this.buttonToMap.Location = new System.Drawing.Point(716, 10);
+            this.buttonToMap.Name = "buttonToMap";
+            this.buttonToMap.Size = new System.Drawing.Size(75, 23);
+            this.buttonToMap.TabIndex = 5;
+            this.buttonToMap.Text = "To Map";
+            this.buttonToMap.UseVisualStyleBackColor = true;
+            this.buttonToMap.Click += new System.EventHandler(this.buttonToMap_Click);
+            // 
+            // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1008, 450);
+            this.Controls.Add(this.buttonToMap);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.comboBoxMapSelect);
             this.Controls.Add(this.gMapControl1);
-            this.Name = "Form1";
+            this.Name = "MainForm";
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.groupBox1.ResumeLayout(false);
@@ -298,6 +310,7 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.TextBox textBoxHeartRate;
         private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Button buttonToMap;
     }
 }
 

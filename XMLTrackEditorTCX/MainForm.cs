@@ -9,6 +9,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml;
+using GMap.NET;
+using GMap.NET.WindowsForms;
+using GMap.NET.WindowsForms.Markers;
 
 namespace XMLTrackEditorTCX
 {
@@ -17,12 +20,6 @@ namespace XMLTrackEditorTCX
         public MainForm()
         {
             InitializeComponent();
-
-
-
-
-
-
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -33,9 +30,9 @@ namespace XMLTrackEditorTCX
             }
             comboBoxMapSelect.Text = comboBoxMapSelect.Items[0].ToString();
 
-            comboBoxMapSelect.SelectedIndexChanged += new System.EventHandler(comboBoxMapSelect_SelectedIndexChanged);
+            comboBoxMapSelect.SelectedIndexChanged += comboBoxMapSelect_SelectedIndexChanged;
 
-            //LoadGmap();
+            LoadGmap();
         }
 
         private void LoadGmap()
@@ -127,24 +124,24 @@ namespace XMLTrackEditorTCX
             gMapControl1.MapProvider = _availableMapsGMapProvider[comboBoxMapSelect.Text];
         }
 
-        private List<TrackPoint> points = new List<TrackPoint>();
+        private List<TrackPoint> _points = new List<TrackPoint>();
 
         private void ShowPoints()
         {
             listViewData.Items.Clear();
 
-            for (int i = 0; i < points.Count; i++)
+            for (int i = 0; i < _points.Count; i++)
             {
                 listViewData.Items.Add(new ListViewItem(new string[]
                 {
-                    i.ToString(), points[i].Time.ToString()
+                    i.ToString(), _points[i].Time.ToString()
                 }));
             }
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            points.Clear();
+            _points.Clear();
 
             XmlDocument xDoc = new XmlDocument();
             xDoc.Load("C:\\Users\\BM-CMP\\source\\repos\\VVEvgeny\\Storage\\XMLTrackEditorTCX\\data\\workout.tcx");
@@ -204,13 +201,14 @@ namespace XMLTrackEditorTCX
                                                 }
                                             }
 
-                                            points.Add(tp);
-
-                                            if (points.Count > 100)
+                                            _points.Add(tp);
+                                            /*
+                                            if (_points.Count > 10000)
                                             {
                                                 ShowPoints();
                                                 return;
                                             }
+                                            */
                                             //MessageBox.Show(tp.ToString());
 
                                             //return;
@@ -259,16 +257,15 @@ namespace XMLTrackEditorTCX
             }
         }
 
-        private int selectedIndex = -1;
+        private int _selectedIndex = -1;
         private void listViewData_SelectedIndexChanged(object sender, EventArgs e)
         {
-            var list = sender as ListView;
-            if (list != null)
+            if (sender is ListView list)
             {
                 if (list.SelectedIndices.Count > 0)
                 {
-                    selectedIndex = list.SelectedIndices[0];
-                    var item = points[selectedIndex];
+                    _selectedIndex = list.SelectedIndices[0];
+                    var item = _points[_selectedIndex];
 
                     textBoxTime.Text = item.Time.ToString(CultureInfo.InvariantCulture);
                     textBoxLatitude.Text = item.Position.LatitudeDegrees.ToString(CultureInfo.InvariantCulture);
@@ -282,14 +279,14 @@ namespace XMLTrackEditorTCX
                 }
             }
 
-            selectedIndex = -1;
+            _selectedIndex = -1;
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
-            if (selectedIndex != -1)
+            if (_selectedIndex != -1)
             {
-                var item = points[selectedIndex];
+                var item = _points[_selectedIndex];
 
                 item.Time = Convert.ToDateTime(textBoxTime.Text, CultureInfo.InvariantCulture);
                 item.Position.LatitudeDegrees = Convert.ToDouble(textBoxLatitude.Text, CultureInfo.InvariantCulture);
@@ -297,12 +294,49 @@ namespace XMLTrackEditorTCX
                 item.AltitudeMeters = Convert.ToInt32(textBoxAltitude.Text);
                 item.HeartRateBpm = Convert.ToInt32(textBoxHeartRate.Text);
 
-                listViewData.Items[selectedIndex] = new ListViewItem(new string[]
+                listViewData.Items[_selectedIndex] = new ListViewItem(new string[]
                 {
-                    selectedIndex.ToString(), item.Time.ToString()
+                    _selectedIndex.ToString(), item.Time.ToString(CultureInfo.InvariantCulture)
                 });
 
             }
+        }
+
+
+        private const int RatioOnMap = 100;
+        private void buttonToMap_Click(object sender, EventArgs e)
+        {
+            var markerOverlay = new GMapOverlay("markers");
+
+            /*
+            gMapControl1.OnMarkerClick += (marker, mouseArgs) =>
+            {
+// From this point marker is the clicked marker do as you wish here
+// Pass it to another form and use form.show to display the form.
+// MessageBox.Show is to show proof the event fired.
+                MessageBox.Show(marker.ToolTipText);
+// If you have a marker form you can display it like so.
+                //MarkerForm form = new MarkerForm();
+                //form.Show();
+            };
+            */
+
+
+            for (var i = 0; i < _points.Count; i++)
+            {
+                if(i != 0 && i != _points.Count - 1 && i % RatioOnMap != 0)
+                    continue;
+                
+                var p = _points[i];
+                var marker = new GMarkerGoogle(new PointLatLng(p.Position.LatitudeDegrees, p.Position.LongitudeDegrees),
+                    GMarkerGoogleType.green)
+                {
+                    ToolTipMode = MarkerTooltipMode.OnMouseOver, ToolTipText = i.ToString()
+                };
+                markerOverlay.Markers.Add(marker);
+            }
+
+            gMapControl1.Overlays.Add(markerOverlay);
         }
     }
 }
