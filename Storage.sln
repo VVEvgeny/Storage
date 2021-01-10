@@ -25,6 +25,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Asyncs", "Asyncs\Asyncs.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XMLTrackEditorTCX", "XMLTrackEditorTCX\XMLTrackEditorTCX.csproj", "{63A03F27-FA02-4336-A83D-04309C450F6C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TelegramBots", "MySeenParserBot\MySeenParserBot\TelegramBots.csproj", "{87EC5A98-D168-4A47-86DD-EDE97F9F6F45}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -75,6 +77,10 @@ Global
 		{63A03F27-FA02-4336-A83D-04309C450F6C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{63A03F27-FA02-4336-A83D-04309C450F6C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{63A03F27-FA02-4336-A83D-04309C450F6C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{87EC5A98-D168-4A47-86DD-EDE97F9F6F45}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{87EC5A98-D168-4A47-86DD-EDE97F9F6F45}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{87EC5A98-D168-4A47-86DD-EDE97F9F6F45}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{87EC5A98-D168-4A47-86DD-EDE97F9F6F45}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

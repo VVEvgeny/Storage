@@ -243,3 +243,4 @@ ModelManifest.xml
 
 # FAKE - F# Make
 .fake/
+/MySeenParserBot/MySeenParserBot/TelegramBots/MySeenParserBot/Secrets.cs
