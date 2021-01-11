@@ -41,6 +41,8 @@
     <None Include="Less\styles2.less" />
     <None Include="Sass\fragment.scss" />
     <None Include="Sass\styles.scss" />
+    <None Include="WebAudio3D\LICENSE" />
+    <None Include="WebAudio3D\README.md" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
@@ -60,6 +62,15 @@
     <Content Include="Sass\styles.min.css">
       <DependentUpon>styles.css</DependentUpon>
     </Content>
+    <Content Include="WebAudio3D\demo.audio.js" />
+    <Content Include="WebAudio3D\demo.css" />
+    <Content Include="WebAudio3D\demo.js" />
+    <Content Include="WebAudio3D\index.htm" />
+    <Content Include="WebAudio3D\res\background.png" />
+    <Content Include="WebAudio3D\res\snd-01.ogg" />
+    <Content Include="WebAudio3D\res\snd-02.ogg" />
+    <Content Include="WebAudio3D\res\snd-03.ogg" />
+    <Content Include="WebAudio3D\res\snd-04.ogg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
