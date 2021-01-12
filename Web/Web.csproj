@@ -46,6 +46,8 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <Content Include="Canvas-FaviconCircularLoaderAnimation\index.html" />
+    <Content Include="Canvas-FaviconCircularLoaderAnimation\script.js" />
     <Content Include="Less\index.html" />
     <Content Include="Less\less.js" />
     <Content Include="Less\styles.css" />
