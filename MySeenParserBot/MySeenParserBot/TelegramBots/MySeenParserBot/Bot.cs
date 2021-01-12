@@ -9,7 +9,6 @@ using MySeenParserBot.TelegramBots.MySeenParserBot.Parsers;
 using Newtonsoft.Json;
 using Telegram.Bot;
 using Telegram.Bot.Args;
-using Telegram.Bot.Types.Enums;
 
 namespace MySeenParserBot.TelegramBots.MySeenParserBot
 {
@@ -22,6 +21,7 @@ namespace MySeenParserBot.TelegramBots.MySeenParserBot
             _commandsList = new List<CommandBase>
             {
                 //only owner
+                new AddUserNameCommand(),
                 new AddUserCommand(),
                 new ListAllCommand(),//+status service
                 new UnPauseAllTasksCommand(),
@@ -47,6 +47,13 @@ namespace MySeenParserBot.TelegramBots.MySeenParserBot
         public static HashSet<long> AcceptedUsers = new HashSet<long>()
         {
             Secrets.OwnerChatId
+        };
+
+        public static Dictionary<long, string> KnownUserNames = new Dictionary<long, string>()
+        {
+            { Secrets.OwnerChatId, Secrets.OwnerChatName },
+            { Secrets.FrineChatId1, Secrets.FrineChatName1 },
+            { Secrets.FrineChatId2, Secrets.FrineChatName2 }
         };
 
         public BotTasks BotTasks;
@@ -121,6 +128,47 @@ namespace MySeenParserBot.TelegramBots.MySeenParserBot
         }
 
 
+        private static readonly string KnownUsersPath = Environment.CurrentDirectory + "\\" + "KnownUsers.txt";
+
+        private void LoadKnownUsers()
+        {
+            lock (KnownUserNames)
+            {
+                try
+                {
+                    KnownUserNames = JsonConvert.DeserializeObject<Dictionary<long, string>>(File.ReadAllText(KnownUsersPath));
+                }
+                catch (Exception e)
+                {
+                    KnownUserNames = new Dictionary<long, string>()
+                    {
+                        { Secrets.OwnerChatId, Secrets.OwnerChatName },
+                        { Secrets.FrineChatId1, Secrets.FrineChatName1 },
+                        { Secrets.FrineChatId2, Secrets.FrineChatName2 }
+                    };
+
+                    _writeDebugInfo?.Invoke("LoadAcceptedUsers exception e=" + e.Message);
+                }
+            }
+        }
+        private void SaveKnownUsers()
+        {
+            lock (KnownUserNames)
+            {
+                var serializer = new JsonSerializer { NullValueHandling = NullValueHandling.Ignore };
+                using (var sw = new StreamWriter(KnownUsersPath))
+                {
+                    using (JsonWriter writer = new JsonTextWriter(sw))
+                    {
+                        serializer.Serialize(writer, KnownUserNames);
+                    }
+                }
+            }
+        }
+
+
+
+
         private static readonly string StoragePath = Environment.CurrentDirectory + "\\" + "storage.txt";
         private void LoadStorage()
         {
@@ -189,6 +237,7 @@ namespace MySeenParserBot.TelegramBots.MySeenParserBot
 
             SaveStorage();
             SaveAcceptedUsers();
+            SaveKnownUsers();
 
             _cancelTokenSource.Cancel();
             _cancelTokenSource = null;
@@ -267,6 +316,7 @@ namespace MySeenParserBot.TelegramBots.MySeenParserBot
 
             LoadStorage();
             LoadAcceptedUsers();
+            LoadKnownUsers();
 
             while (true)
             {

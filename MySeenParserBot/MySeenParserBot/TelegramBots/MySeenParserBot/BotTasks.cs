@@ -55,6 +55,13 @@ namespace MySeenParserBot.TelegramBots.MySeenParserBot
             }
         }
 
+        private string GetUserNameIfKnown(long userId)
+        {
+            if (Bot.KnownUserNames.ContainsKey(userId))
+                return Bot.KnownUserNames[userId];
+
+            return userId.ToString();
+        }
         public string GetAllTasks()
         {
             var tasks = "";
@@ -64,7 +71,7 @@ namespace MySeenParserBot.TelegramBots.MySeenParserBot
                 {
                     foreach (var t in tt.Value)
                     {
-                        tasks += (tt.Key + " " + t.TaskId + (t.IsActive ? " + " : " - ") + t.Request) + " Обновление через:" + t.Repeat +
+                        tasks += (GetUserNameIfKnown(tt.Key) + " " + t.TaskId + (t.IsActive ? " + " : " - ") + t.Request) + " Обновление через:" + t.Repeat +
                                  Environment.NewLine;
                     }
                 }
@@ -89,7 +96,6 @@ namespace MySeenParserBot.TelegramBots.MySeenParserBot
                     }
                 }
             }
-
             return tasks;
         }
 

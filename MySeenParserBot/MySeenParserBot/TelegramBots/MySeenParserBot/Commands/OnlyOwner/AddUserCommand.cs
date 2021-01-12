@@ -17,7 +17,6 @@ namespace MySeenParserBot.TelegramBots.MySeenParserBot.Commands.OnlyOwner
         public override async Task Execute(Message message, Bot bot, TelegramBotClient botClient)
         {
             var userid = Convert.ToInt64(message.Text.Remove(0, Name.Length));
-
             if (userid != 0)
             {
                 lock (Bot.AcceptedUsers)
@@ -32,7 +31,7 @@ namespace MySeenParserBot.TelegramBots.MySeenParserBot.Commands.OnlyOwner
             {
 
                 await botClient.SendTextMessageAsync(message.Chat.Id,
-                    "Ошибка, пока поддерживаю только https://cars.av.by/");
+                    "Ошибка добавления пользователя");
             }
         }
     }

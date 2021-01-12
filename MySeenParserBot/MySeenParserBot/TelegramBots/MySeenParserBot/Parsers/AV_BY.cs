@@ -116,6 +116,22 @@ namespace MySeenParserBot.TelegramBots.MySeenParserBot.Parsers
             public bool LastUpdate = false;
             public bool Price;
         }
+
+        private static bool ComparePrice(string priceWas, string priceNew)
+        {
+            //2 181 р.≈ 850 $
+            //Цена Было:32 325 р.≈ 12 600 $ Стало:32 492 р.≈ 12 600 $
+            try
+            {
+                return priceWas.Substring(priceWas.IndexOf('≈')) == priceNew.Substring(priceNew.IndexOf('≈'));
+            }
+            catch
+            {
+                // ignored
+            }
+
+            return priceWas == priceNew;
+        }
         private static List<CarDiff> CompareCars(List<Car> fromStorage, List<Car> fromWeb)
         {
             var cd = new List<CarDiff>();
@@ -144,7 +160,9 @@ namespace MySeenParserBot.TelegramBots.MySeenParserBot.Parsers
                         cs.Info != cw.Info ||
                         cs.Location != cw.Location ||
                         //cs.LastUpdate != cw.LastUpdate ||
-                        cs.Price != cw.Price)
+                        //cs.Price != cw.Price
+                        !ComparePrice(cs.Price,cw.Price)
+                        )
                     {
                         cd.Add(new CarDiff
                         {
@@ -156,7 +174,7 @@ namespace MySeenParserBot.TelegramBots.MySeenParserBot.Parsers
                             Info = cs.Info != cw.Info,
                             Location = cs.Location != cw.Location,
                             //LastUpdate = cs.LastUpdate != cw.LastUpdate,
-                            Price = cs.Price != cw.Price
+                            Price = !ComparePrice(cs.Price, cw.Price)
                         });
                     }
                 }

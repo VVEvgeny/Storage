@@ -71,6 +71,7 @@
     <Compile Include="TelegramBots\MySeenParserBot\Commands\AddCommand.cs" />
     <Compile Include="TelegramBots\MySeenParserBot\Commands\CommandBase.cs" />
     <Compile Include="TelegramBots\MySeenParserBot\Commands\ListCommand.cs" />
+    <Compile Include="TelegramBots\MySeenParserBot\Commands\OnlyOwner\AddUserNameCommand.cs" />
     <Compile Include="TelegramBots\MySeenParserBot\Commands\OnlyOwner\AddUserCommand.cs" />
     <Compile Include="TelegramBots\MySeenParserBot\Commands\OnlyOwner\ListAllCommand.cs" />
     <Compile Include="TelegramBots\MySeenParserBot\Commands\OnlyOwner\UnPauseAllTasksCommand.cs" />
