@@ -223,7 +223,15 @@ namespace MySeenParserBot.TelegramBots.MySeenParserBot
                 return false;
 
             _cancelTokenSource = new CancellationTokenSource();
-            new Task(() => { Service(_cancelTokenSource.Token); }).Start();
+
+            try
+            {
+                new Task(() => { Service(_cancelTokenSource.Token); }).Start();
+            }
+            catch (Exception e)
+            {
+                _botClient.SendTextMessageAsync(Secrets.OwnerChatId, "TASK Start EXCEPTION e=" + e.Message);
+            }
 
             return true;
         }

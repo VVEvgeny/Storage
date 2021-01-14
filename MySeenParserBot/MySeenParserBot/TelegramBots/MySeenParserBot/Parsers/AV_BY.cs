@@ -123,7 +123,8 @@ namespace MySeenParserBot.TelegramBots.MySeenParserBot.Parsers
             //Цена Было:32 325 р.≈ 12 600 $ Стало:32 492 р.≈ 12 600 $
             try
             {
-                return priceWas.Substring(priceWas.IndexOf('≈')) == priceNew.Substring(priceNew.IndexOf('≈'));
+                return priceWas.Split('≈')[0] == priceNew.Split('≈')[0] ||
+                       priceWas.Split('≈')[1] == priceNew.Split('≈')[1];
             }
             catch
             {
@@ -273,9 +274,13 @@ namespace MySeenParserBot.TelegramBots.MySeenParserBot.Parsers
                     }
                 }
 
-                var newData = SaveCarsToStorage(cw);
-                //перед обновлением словаря не забыть заблокировать его !!!
-                saveDataProcessTask(userId, task.TaskId, newData);
+                //Защита от вылетов инета, если в новом запросе пусто, то нечего тут и делать
+                if (cw.Count != 0)
+                {
+                    var newData = SaveCarsToStorage(cw);
+                    //перед обновлением словаря не забыть заблокировать его !!!
+                    saveDataProcessTask(userId, task.TaskId, newData);
+                }
             }
             catch (Exception e)
             {
