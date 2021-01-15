@@ -66,5 +66,21 @@ namespace MySeenParserBot
         {
             buttonStartService_Click(sender, e);
         }
+
+        private void MainForm_Resize(object sender, EventArgs e)
+        {
+            if (WindowState == FormWindowState.Minimized)
+            {
+                Hide();
+                notifyIcon.Visible = true;
+            }
+        }
+
+        private void notifyIcon_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            Show();
+            WindowState = FormWindowState.Normal;
+            notifyIcon.Visible = false;
+        }
     }
 }

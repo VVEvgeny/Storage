@@ -311,6 +311,13 @@ namespace MySeenParserBot.TelegramBots.MySeenParserBot
         //service
         private TelegramBotClient _botClient;
 
+        private const int TimeOutToSaveAll = 60 * 60; //1 per hour
+        private void PeriodicalSaveAll()
+        {
+            SaveAcceptedUsers();
+            SaveKnownUsers();
+            SaveStorage();
+        }
         private async void Service(CancellationToken cancellationToken)
         {
             _writeDebugInfo?.Invoke("Service started!");
@@ -325,6 +332,8 @@ namespace MySeenParserBot.TelegramBots.MySeenParserBot
             LoadStorage();
             LoadAcceptedUsers();
             LoadKnownUsers();
+
+            int timeOutToSaveAll = TimeOutToSaveAll;
 
             while (true)
             {
@@ -342,7 +351,6 @@ namespace MySeenParserBot.TelegramBots.MySeenParserBot
 
                     return;
                 }
-
 
                 int totalUsers = 0;
                 int activeTasks = 0;
@@ -391,6 +399,14 @@ namespace MySeenParserBot.TelegramBots.MySeenParserBot
                                              + " Пользователей:" + totalUsers
                                              + " Задач Активных/Всего:"+ activeTasks+"/"+ totalTasks
                 );
+
+
+                timeOutToSaveAll--;
+                if (timeOutToSaveAll == 0)
+                {
+                    PeriodicalSaveAll();
+                    timeOutToSaveAll = TimeOutToSaveAll;
+                }
 
                 Thread.Sleep(1000);
                 //_writeDebugInfo?.Invoke("Service after sleep");
