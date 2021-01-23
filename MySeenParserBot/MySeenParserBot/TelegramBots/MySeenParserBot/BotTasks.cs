@@ -55,7 +55,7 @@ namespace MySeenParserBot.TelegramBots.MySeenParserBot
             }
         }
 
-        private string GetUserNameIfKnown(long userId)
+        public static string GetUserNameIfKnown(long userId)
         {
             if (Bot.KnownUserNames.ContainsKey(userId))
                 return Bot.KnownUserNames[userId];

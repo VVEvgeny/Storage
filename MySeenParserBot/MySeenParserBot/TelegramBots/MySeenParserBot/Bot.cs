@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using MySeenParserBot.TelegramBots.MySeenParserBot.Commands;
@@ -53,7 +54,8 @@ namespace MySeenParserBot.TelegramBots.MySeenParserBot
         {
             { Secrets.OwnerChatId, Secrets.OwnerChatName },
             { Secrets.FrineChatId1, Secrets.FrineChatName1 },
-            { Secrets.FrineChatId2, Secrets.FrineChatName2 }
+            { Secrets.FrineChatId2, Secrets.FrineChatName2 },
+            { Secrets.FrineChatId3, Secrets.FrineChatName3 },
         };
 
         public BotTasks BotTasks;
@@ -144,7 +146,8 @@ namespace MySeenParserBot.TelegramBots.MySeenParserBot
                     {
                         { Secrets.OwnerChatId, Secrets.OwnerChatName },
                         { Secrets.FrineChatId1, Secrets.FrineChatName1 },
-                        { Secrets.FrineChatId2, Secrets.FrineChatName2 }
+                        { Secrets.FrineChatId2, Secrets.FrineChatName2 },
+                        { Secrets.FrineChatId3, Secrets.FrineChatName3 },
                     };
 
                     _writeDebugInfo?.Invoke("LoadAcceptedUsers exception e=" + e.Message);
@@ -165,9 +168,6 @@ namespace MySeenParserBot.TelegramBots.MySeenParserBot
                 }
             }
         }
-
-
-
 
         private static readonly string StoragePath = Environment.CurrentDirectory + "\\" + "storage.txt";
         private void LoadStorage()
@@ -290,7 +290,7 @@ namespace MySeenParserBot.TelegramBots.MySeenParserBot
                     }
                     catch (Exception e)
                     {
-                        await _botClient.SendTextMessageAsync(message.Chat.Id, "Не смог обработать запрос, обновите его или обратитесь к администратору");
+                        await _botClient.SendTextMessageAsync(message.Chat.Id, GetType().Name + " Не смог обработать запрос, обновите его или обратитесь к администратору");
 
                         await _botClient.SendTextMessageAsync(Secrets.OwnerChatId, "Ошибка контролера EXCEPTION:" + e.Message
                                                                                                              + " userId=" + message.Chat.Id
@@ -318,6 +318,30 @@ namespace MySeenParserBot.TelegramBots.MySeenParserBot
             SaveKnownUsers();
             SaveStorage();
         }
+
+        private static readonly object AvailableParsersLoad = new object();
+        private static List<IParser> _availableParsers;
+        public static List<IParser> AvailableParsers
+        {
+            get
+            {
+                lock (AvailableParsersLoad)
+                {
+                    if (_availableParsers == null)
+                    {
+                        _availableParsers = new List<IParser>
+                        {
+                            new AV_BY(), 
+                            new Kufar()
+                        };
+                    }
+                }
+
+                return _availableParsers;
+            }
+        }
+
+
         private async void Service(CancellationToken cancellationToken)
         {
             _writeDebugInfo?.Invoke("Service started!");
@@ -375,10 +399,23 @@ namespace MySeenParserBot.TelegramBots.MySeenParserBot
 
                                         var i1 = i;
 
-                                        new Task(() =>
+                                        var parser = AvailableParsers.FirstOrDefault(p => activeTask.Value[i].Request.StartsWith(p.AcceptLink));
+                                        if (parser != null)
                                         {
-                                            AV_BY.ProcessTask(activeTask.Key, activeTask.Value[i1], _botClient,_cancelTokenSource.Token, BotTasks.SaveDataProcessTask, BotTasks.OnDeleteWithParsing);
-                                        }).Start();
+                                            new Task(() =>
+                                            {
+                                                //AV_BY.ProcessTask(activeTask.Key, activeTask.Value[i1], _botClient, _cancelTokenSource.Token, BotTasks.SaveDataProcessTask, BotTasks.OnDeleteWithParsing);
+                                                parser.ProcessTask(activeTask.Key, activeTask.Value[i1], _botClient, _cancelTokenSource.Token, BotTasks.SaveDataProcessTask, BotTasks.OnDeleteWithParsing);
+                                            }).Start();
+                                        }
+                                        else
+                                        {
+                                            new Task(() =>
+                                            {
+                                                _botClient.SendTextMessageAsync(Secrets.OwnerChatId, "Ошибка Сервиса  НЕ найден ПАРСЕР !!!", cancellationToken: cancellationToken);
+                                            }).Start();
+                                            BotTasks.OnDeleteWithParsing(activeTask.Key, activeTask.Value[i1].TaskId);
+                                        }
                                     }
                                     else
                                     {

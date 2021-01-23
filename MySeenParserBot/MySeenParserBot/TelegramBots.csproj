@@ -58,6 +58,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DebugGlobal.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -85,6 +86,10 @@
     <Compile Include="TelegramBots\MySeenParserBot\Commands\StopAllCommand.cs" />
     <Compile Include="TelegramBots\MySeenParserBot\Commands\StopCommand.cs" />
     <Compile Include="TelegramBots\MySeenParserBot\Parsers\AV_BY.cs" />
+    <Compile Include="TelegramBots\MySeenParserBot\Parsers\CacheWebItem.cs" />
+    <Compile Include="TelegramBots\MySeenParserBot\Parsers\IParser.cs" />
+    <Compile Include="TelegramBots\MySeenParserBot\Parsers\Kufar.cs" />
+    <Compile Include="TelegramBots\MySeenParserBot\Parsers\ParserBase.cs" />
     <Compile Include="TelegramBots\MySeenParserBot\Secrets.cs" />
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>

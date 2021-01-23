@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Threading;
 using System.Windows.Forms;
 using MySeenParserBot.TelegramBots.MySeenParserBot;
@@ -19,6 +20,20 @@ namespace MySeenParserBot
             lock (richTextBox1)
             {
                 richTextBox1.Text += text + Environment.NewLine;
+            }
+        }
+        private readonly object _writeDebugToFileSync = new object();
+
+        private void WriteDebugToFile(string text)
+        {
+            lock (_writeDebugToFileSync)
+            {
+                using (StreamWriter wr = new StreamWriter(Environment.CurrentDirectory + "\\" + "debug.txt", true))
+                {
+                    wr.WriteLine(text);
+                    wr.Flush();
+                    wr.Close();
+                }
             }
         }
         private void WriteLabel(string text)
@@ -65,6 +80,7 @@ namespace MySeenParserBot
         private void MainForm_Load(object sender, EventArgs e)
         {
             buttonStartService_Click(sender, e);
+            DebugGlobal.writeDebugInfo = WriteDebugToFile;//WriteRichText;
         }
 
         private void MainForm_Resize(object sender, EventArgs e)
@@ -81,6 +97,14 @@ namespace MySeenParserBot
             Show();
             WindowState = FormWindowState.Normal;
             notifyIcon.Visible = false;
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            var ret = _bot.BotTasks.GetAllTasks();
+            WriteRichText((string.IsNullOrEmpty(ret)
+                ? "Пусто"
+                : ("Пользователь / Задача / Активно / Ссылка " + Environment.NewLine + ret)));
         }
     }
 }
