@@ -244,3 +244,7 @@ ModelManifest.xml
 # FAKE - F# Make
 .fake/
 /MySeenParserBot/MySeenParserBot/TelegramBots/MySeenParserBot/Secrets.cs
+/MySeenParserBot/MySeenParserBot/lib/Telegram.Bot.dll
+/MySeenParserBot/MySeenParserBot/lib/Newtonsoft.Json.dll
+/MySeenParserBot/MySeenParserBot/lib/HtmlAgilityPack.dll
+/MySeenParserBot/MySeenParserBot/lib/HtmlAgilityPack.CssSelectors.dll

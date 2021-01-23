@@ -1,5 +1,7 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
+using System.Reflection;
 using System.Threading;
 using System.Windows.Forms;
 using MySeenParserBot.TelegramBots.MySeenParserBot;
@@ -8,12 +10,12 @@ namespace MySeenParserBot
 {
     public partial class MainForm : Form
     {
-        private static Bot _bot = new Bot();
-
         public MainForm()
         {
             InitializeComponent();
         }
+
+        private static Bot _bot = new Bot();
 
         private void WriteRichText(string text)
         {
@@ -80,7 +82,7 @@ namespace MySeenParserBot
         private void MainForm_Load(object sender, EventArgs e)
         {
             buttonStartService_Click(sender, e);
-            DebugGlobal.writeDebugInfo = WriteDebugToFile;//WriteRichText;
+            DebugGlobal.WriteDebug = WriteDebugToFile;//WriteRichText;
         }
 
         private void MainForm_Resize(object sender, EventArgs e)

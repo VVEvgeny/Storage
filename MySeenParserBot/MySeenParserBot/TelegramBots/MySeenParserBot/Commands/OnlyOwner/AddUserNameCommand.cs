@@ -39,6 +39,7 @@ namespace MySeenParserBot.TelegramBots.MySeenParserBot.Commands.OnlyOwner
 
                     await botClient.SendTextMessageAsync(message.Chat.Id,
                         "Успешно " + (isNew ? "добавлено" : "обновлено") + " имя");
+                    return;
                 }
             }
             catch
