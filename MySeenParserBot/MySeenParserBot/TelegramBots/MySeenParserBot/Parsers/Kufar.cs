@@ -37,18 +37,20 @@ namespace MySeenParserBot.TelegramBots.MySeenParserBot.Parsers
             var doc = web.Load(url);
 
             var nodes = doc.QuerySelectorAll("a .k-fxEn-b80df");
+            if (nodes == null || nodes.Count == 0)
+                nodes = doc.QuerySelectorAll("a .k-pmsp-e76f1");
 
             foreach (var node in nodes)
             {
                 var item = new Item
                 {
-                    Name = node.QuerySelector("h3 .k-fxbJ-16e40")?.InnerText,
+                    Name = node.TryGetNode("h3 .k-fxbJ-16e40", "h3 .k-pmvA-ebdbb")?.InnerText,
                     //Name = node.QuerySelector("div .listing-item__about")?.QuerySelector("h3 a span")?.InnerText?.Replace("<!-- -->", ""),
                     Image = node.QuerySelector("img")?.Attributes["data-src"]?.Value,
                     Info = "",
-                    Price = node.QuerySelector("span .k-beVe-c6572")?.InnerText,
-                    Location = node.QuerySelector("span .k-fwEX-8b3f6")?.InnerText,
-                    LastUpdate = node.QuerySelector("div .k-fFtb-c33c6")?.InnerText,
+                    Price = node.TryGetNode("span .k-beVe-c6572", "span .k-hNKj-19b8b")?.InnerText,
+                    Location = node.TryGetNode("span .k-fwEX-8b3f6", "span .k-pYsu-eb441")?.InnerText,
+                    LastUpdate = node.TryGetNode("div .k-fFtb-c33c6", "div .k-pxsl-541ef")?.InnerText,
                     Link = node.Attributes["href"]?.Value
                 };
 
@@ -175,14 +177,17 @@ namespace MySeenParserBot.TelegramBots.MySeenParserBot.Parsers
             return messageToBot;
         }
 
-        private bool _silentBecauseFirstRun = true;
+        //1й раз не показываем этот огромный список!
+        private readonly HashSet<string> _running = new HashSet<string>();
         public async void ProcessTask(long userId, BotTasks.BotTask task, TelegramBotClient bot, CancellationToken cancellationToken,
             BotTasks.SaveDataProcessTaskDelegate saveDataProcessTask, BotTasks.OnDeleteWithParsingDelegate onDeleteWithParsing)
         {
             try
             {
+                var silentBecauseFirstRun = !_running.Contains(userId + task.Request);
+
                 var cw = GetItemsFromWeb(task.Request);
-                if (!_silentBecauseFirstRun)
+                if (!silentBecauseFirstRun)
                 {
                     var cs = string.IsNullOrEmpty(task.Data)
                         ? null
@@ -227,7 +232,9 @@ namespace MySeenParserBot.TelegramBots.MySeenParserBot.Parsers
                     //перед обновлением словаря не забыть заблокировать его !!!
                     saveDataProcessTask(userId, task.TaskId, JsonConvert.SerializeObject(cw));
                 }
-                _silentBecauseFirstRun = false;
+
+                if (silentBecauseFirstRun)
+                    _running.Add(userId + task.Request);
             }
             catch (Exception e)
             {

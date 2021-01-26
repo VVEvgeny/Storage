@@ -29,8 +29,7 @@ namespace MySeenParserBot.TelegramBots.MySeenParserBot.Parsers
         {
             if (Cache.ContainsActual(url))
             {
-                if (Cache.Get(url) == null) DebugGlobal.Write(nameof(Cache));
-
+                //if (Cache.Get(url) == null) DebugGlobal.Write(nameof(Cache));
                 return Cache.Get(url);
             }
 
@@ -233,33 +232,22 @@ namespace MySeenParserBot.TelegramBots.MySeenParserBot.Parsers
         }
 
         //1й раз не показываем этот огромный список!
-        private bool _silentBecauseFirstRun = true;
+        private readonly HashSet<string> _running = new HashSet<string>();
 
         public async void ProcessTask(long userId, BotTasks.BotTask task,
             TelegramBotClient bot, CancellationToken cancellationToken, BotTasks.SaveDataProcessTaskDelegate saveDataProcessTask, BotTasks.OnDeleteWithParsingDelegate onDeleteWithParsing)
         {
             try
             {
+                var silentBecauseFirstRun = !_running.Contains(userId + task.Request);
+
                 var cw = GetCarsFromWeb(task.Request);
-
-
-
-                if(cw == null) DebugGlobal.Write(nameof(cw));
-
-
-
-                if (!_silentBecauseFirstRun)
+                if (!silentBecauseFirstRun)
                 {
                     var cs = string.IsNullOrEmpty(task.Data)
                         ? null
                         : JsonConvert.DeserializeObject<List<Car>>(task.Data);
                     
-
-
-                    if (cs == null) DebugGlobal.Write(nameof(cs));
-
-
-
                     if (cs == null || cs.Count == 0)
                     {
                         //first run? storage is empty? just save and show All
@@ -305,11 +293,12 @@ namespace MySeenParserBot.TelegramBots.MySeenParserBot.Parsers
                     saveDataProcessTask(userId, task.TaskId, JsonConvert.SerializeObject(cw));
                 }
 
-                _silentBecauseFirstRun = false;
+                if (silentBecauseFirstRun)
+                    _running.Add(userId + task.Request);
             }
             catch (Exception e)
             {
-                DebugGlobal.Write("Ошибка Парсера " + GetType().Name + " EXCEPTION:" + e.Message);
+                //DebugGlobal.Write("Ошибка Парсера " + GetType().Name + " EXCEPTION:" + e.Message);
 
                 await SendToUser(userId,
                     GetType().Name + " Не смог обработать запрос, обновите его или обратитесь к администратору",

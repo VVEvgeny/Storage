@@ -99,6 +99,7 @@
     <Compile Include="TelegramBots\MySeenParserBot\Parsers\IParser.cs" />
     <Compile Include="TelegramBots\MySeenParserBot\Parsers\Kufar.cs" />
     <Compile Include="TelegramBots\MySeenParserBot\Parsers\ParserBase.cs" />
+    <Compile Include="TelegramBots\MySeenParserBot\Parsers\ParserExt.cs" />
     <Compile Include="TelegramBots\MySeenParserBot\Secrets.cs" />
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
@@ -127,8 +128,6 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="lib\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
