@@ -24,7 +24,7 @@ namespace MySeenParserBot.TelegramBots.MySeenParserBot.Parsers
         }
 
         private static CacheWebItemStorage<Item> Cache = new CacheWebItemStorage<Item>();
-        private static List<Item> GetItemsFromWeb(string url)
+        private static List<Item> GetItemsFromWeb(string url, TelegramBotClient bot, CancellationToken cancellationToken)
         {
             if (Cache.ContainsActual(url))
                 return Cache.Get(url);
@@ -36,30 +36,42 @@ namespace MySeenParserBot.TelegramBots.MySeenParserBot.Parsers
             var web = new HtmlWeb();
             var doc = web.Load(url);
 
-            var nodes = doc.QuerySelectorAll("a .k-fxEn-b80df");
-            if (nodes == null || nodes.Count == 0)
-                nodes = doc.QuerySelectorAll("a .k-pmsp-e76f1");
+            var nodes = doc.TryGetNodeAll("a .k-fxEn-b80df", "a .k-pmsp-e76f1", "a .k-oNUo-97ee9", "a .k-gKmL-c0223", "a .k-Vopm-74aea");
 
-            foreach (var node in nodes)
+            if (nodes != null)
             {
-                var item = new Item
+                foreach (var node in nodes)
                 {
-                    Name = node.TryGetNode("h3 .k-fxbJ-16e40", "h3 .k-pmvA-ebdbb")?.InnerText,
-                    //Name = node.QuerySelector("div .listing-item__about")?.QuerySelector("h3 a span")?.InnerText?.Replace("<!-- -->", ""),
-                    Image = node.QuerySelector("img")?.Attributes["data-src"]?.Value,
-                    Info = "",
-                    Price = node.TryGetNode("span .k-beVe-c6572", "span .k-hNKj-19b8b")?.InnerText,
-                    Location = node.TryGetNode("span .k-fwEX-8b3f6", "span .k-pYsu-eb441")?.InnerText,
-                    LastUpdate = node.TryGetNode("div .k-fFtb-c33c6", "div .k-pxsl-541ef")?.InnerText,
-                    Link = node.Attributes["href"]?.Value
-                };
+                    var item = new Item
+                    {
+                        Name = node.TryGetNode("h3 .k-fxbJ-16e40", "h3 .k-pmvA-ebdbb", "h3 .k-oNeS-2bc8b",
+                            "h3 .k-gKhZ-c7dad", "h3 .k-VoRr-e2203")?.InnerText,
+                        //Name = node.QuerySelector("div .listing-item__about")?.QuerySelector("h3 a span")?.InnerText?.Replace("<!-- -->", ""),
+                        Image = node.QuerySelector("img")?.Attributes["data-src"]?.Value,
+                        Info = "",
+                        Price = node.TryGetNode("span .k-beVe-c6572", "span .k-hNKj-19b8b", "span .k-eRcp-1d52b",
+                            "span .k-gNUS-96512", "span .k-VleK-99b72")?.InnerText,
+                        Location = node.TryGetNode("span .k-fwEX-8b3f6", "span .k-pYsu-eb441", "span .k-oOUx-d4470",
+                            "span .k-geUH-549bc", "span .k-VaOA-c8871")?.InnerText,
+                        LastUpdate = node.TryGetNode("div .k-fFtb-c33c6", "div .k-pxsl-541ef", "div .k-oFUG-3b966",
+                            "div .k-gMUw-ffda9", "div .k-VJOZ-1a3f3")?.InnerText,
+                        Link = node.Attributes["href"]?.Value
+                    };
 
-                //ShowItem(item);
+                    //ShowItem(item);
 
-                items.Add(item);
+                    items.Add(item);
+                }
+
+                Cache.AddOrUpdate(url, items);
             }
-
-            Cache.AddOrUpdate(url, items);
+            else
+            {
+                new Task(() =>
+                {
+                    bot.SendTextMessageAsync(Secrets.OwnerChatId, "Ошибка парсеа Куфар, похоже опять изменилась разметка!", cancellationToken: cancellationToken);
+                }).Start();
+            }
 
             return items;
         }
@@ -186,7 +198,7 @@ namespace MySeenParserBot.TelegramBots.MySeenParserBot.Parsers
             {
                 var silentBecauseFirstRun = !_running.Contains(userId + task.Request);
 
-                var cw = GetItemsFromWeb(task.Request);
+                var cw = GetItemsFromWeb(task.Request, bot, cancellationToken);
                 if (!silentBecauseFirstRun)
                 {
                     var cs = string.IsNullOrEmpty(task.Data)

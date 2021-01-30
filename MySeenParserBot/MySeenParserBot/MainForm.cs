@@ -82,7 +82,8 @@ namespace MySeenParserBot
         private void MainForm_Load(object sender, EventArgs e)
         {
             buttonStartService_Click(sender, e);
-            DebugGlobal.WriteDebug = WriteDebugToFile;//WriteRichText;
+            DebugGlobal.WriteDebug = WriteDebugToFile;
+            DebugGlobal.WriteDebug += WriteRichText;
         }
 
         private void MainForm_Resize(object sender, EventArgs e)

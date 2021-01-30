@@ -414,7 +414,12 @@ namespace MySeenParserBot.TelegramBots.MySeenParserBot
                                             {
                                                 _botClient.SendTextMessageAsync(Secrets.OwnerChatId, "Ошибка Сервиса  НЕ найден ПАРСЕР !!!", cancellationToken: cancellationToken);
                                             }).Start();
-                                            BotTasks.OnDeleteWithParsing(activeTask.Key, activeTask.Value[i1].TaskId);
+                                            new Task(() =>
+                                            {
+                                                //Изменяет коллеклию, надо зайти с начала...
+                                                //пусть поток станет в самый конец очереди на блокировку
+                                                BotTasks.OnDeleteWithParsing(activeTask.Key, activeTask.Value[i1].TaskId);
+                                            }).Start();
                                         }
                                     }
                                     else

@@ -9,16 +9,16 @@ namespace MySeenParserBot.TelegramBots.MySeenParserBot.Parsers
     public abstract class ParserBase
     {
         public delegate string NormalizeDeligate(string message);
-        private readonly Dictionary<long, Queue<string>> MessageCache = new Dictionary<long, Queue<string>>();
-        public Task<Telegram.Bot.Types.Message> SendToUser(long userId, string data, ITelegramBotClient bot, CancellationToken cancellationToken, NormalizeDeligate Normalize = null)
+        private readonly Dictionary<long, Queue<string>> _messageCache = new Dictionary<long, Queue<string>>();
+        public Task<Telegram.Bot.Types.Message> SendToUser(long userId, string data, ITelegramBotClient bot, CancellationToken cancellationToken, NormalizeDeligate normalize = null)
         {
-            if (Normalize != null)
+            if (normalize != null)
             {
-                if (MessageCache.ContainsKey(userId))
+                if (_messageCache.ContainsKey(userId))
                 {
-                    var queue = MessageCache[userId];
-                    var dataNormalized = Normalize(data);
-                    if (queue.Any(q => Normalize(q) == dataNormalized))
+                    var queue = _messageCache[userId];
+                    var dataNormalized = normalize(data);
+                    if (queue.Any(q => normalize(q) == dataNormalized))
                     {
                         //cached and already sended
                         return null;
@@ -31,8 +31,8 @@ namespace MySeenParserBot.TelegramBots.MySeenParserBot.Parsers
                 }
                 else
                 {
-                    MessageCache.Add(userId, new Queue<string>());
-                    MessageCache[userId].Enqueue(data);
+                    _messageCache.Add(userId, new Queue<string>());
+                    _messageCache[userId].Enqueue(data);
                 }
             }
 
