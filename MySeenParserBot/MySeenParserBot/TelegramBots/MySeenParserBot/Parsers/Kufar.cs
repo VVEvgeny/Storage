@@ -23,8 +23,51 @@ namespace MySeenParserBot.TelegramBots.MySeenParserBot.Parsers
             public string Price;
         }
 
+        public static class Markup
+        {
+            public static string List = "a .k-Vopm-74aea";
+            public static string Name = "h3 .k-VoRr-e2203";
+            public static string Price = "span .k-VleK-99b72";
+            public static string Location = "span .k-VaOA-c8871";
+            public static string LastUpdate = "div .k-VJOZ-1a3f3";
+        }
+        private static void ReloadMarkup(HtmlDocument doc)
+        {
+            try
+            {
+                //list
+                //document.getElementsByTagName('article')[0].getElementsByTagName('a')[0].className;
+                var article = doc.QuerySelector("article");
+                //richTextBox1.Text += "article=" + article.GetClassList()[0] + Environment.NewLine;
+                var a = article.QuerySelector("a");
+                Markup.List = "a ." + a.GetClassList()[0];
+
+                //name
+                //document.getElementsByTagName('article')[0].getElementsByTagName('a')[0].getElementsByTagName('h3')[0].className;
+                Markup.Name = "h3 ." + a.QuerySelector("h3").GetClassList()[0];
+
+                //price
+                //document.getElementsByTagName('article')[0].getElementsByTagName('a')[0].getElementsByTagName('span')[1].className;
+                Markup.Price = "span ." + a.QuerySelectorAll("span")[1].GetClassList()[0];
+
+                //location
+                //document.getElementsByTagName('article')[0].getElementsByTagName('a')[0].getElementsByTagName('span')[2].className;
+                Markup.Location = "span ." + a.QuerySelectorAll("span")[2].GetClassList()[0];
+
+                //update
+                //document.getElementsByTagName('article')[0].getElementsByTagName('a')[0].getElementsByTagName('div')[22].className;
+                Markup.LastUpdate = "div ." + a.QuerySelectorAll("div")[22].GetClassList()[0];
+            }
+            catch (Exception e)
+            {
+                //richTextBox1.Text += "EXCEPTION e=" + e.Message + Environment.NewLine;
+            }
+        }
+
         private static CacheWebItemStorage<Item> Cache = new CacheWebItemStorage<Item>();
-        private static List<Item> GetItemsFromWeb(string url, TelegramBotClient bot, CancellationToken cancellationToken)
+
+        private static List<Item> GetItemsFromWeb(string url, TelegramBotClient bot,
+            CancellationToken cancellationToken)
         {
             if (Cache.ContainsActual(url))
                 return Cache.Get(url);
@@ -36,42 +79,65 @@ namespace MySeenParserBot.TelegramBots.MySeenParserBot.Parsers
             var web = new HtmlWeb();
             var doc = web.Load(url);
 
-            var nodes = doc.TryGetNodeAll("a .k-fxEn-b80df", "a .k-pmsp-e76f1", "a .k-oNUo-97ee9", "a .k-gKmL-c0223", "a .k-Vopm-74aea");
-
-            if (nodes != null)
-            {
-                foreach (var node in nodes)
-                {
-                    var item = new Item
-                    {
-                        Name = node.TryGetNode("h3 .k-fxbJ-16e40", "h3 .k-pmvA-ebdbb", "h3 .k-oNeS-2bc8b",
-                            "h3 .k-gKhZ-c7dad", "h3 .k-VoRr-e2203")?.InnerText,
-                        //Name = node.QuerySelector("div .listing-item__about")?.QuerySelector("h3 a span")?.InnerText?.Replace("<!-- -->", ""),
-                        Image = node.QuerySelector("img")?.Attributes["data-src"]?.Value,
-                        Info = "",
-                        Price = node.TryGetNode("span .k-beVe-c6572", "span .k-hNKj-19b8b", "span .k-eRcp-1d52b",
-                            "span .k-gNUS-96512", "span .k-VleK-99b72")?.InnerText,
-                        Location = node.TryGetNode("span .k-fwEX-8b3f6", "span .k-pYsu-eb441", "span .k-oOUx-d4470",
-                            "span .k-geUH-549bc", "span .k-VaOA-c8871")?.InnerText,
-                        LastUpdate = node.TryGetNode("div .k-fFtb-c33c6", "div .k-pxsl-541ef", "div .k-oFUG-3b966",
-                            "div .k-gMUw-ffda9", "div .k-VJOZ-1a3f3")?.InnerText,
-                        Link = node.Attributes["href"]?.Value
-                    };
-
-                    //ShowItem(item);
-
-                    items.Add(item);
-                }
-
-                Cache.AddOrUpdate(url, items);
-            }
-            else
+            var nodes = doc.TryGetNodeAll(Markup.List);
+            if (nodes == null)
             {
                 new Task(() =>
                 {
-                    bot.SendTextMessageAsync(Secrets.OwnerChatId, "Ошибка парсеа Куфар, похоже опять изменилась разметка!", cancellationToken: cancellationToken);
+                    bot.SendTextMessageAsync(Secrets.OwnerChatId,
+                        "Ошибка парсера Куфар, похоже опять изменилась разметка!, пробую перезагрузить !",
+                        cancellationToken: cancellationToken);
                 }).Start();
+
+                ReloadMarkup(doc);
+                nodes = doc.TryGetNodeAll(Markup.List);
+                if (nodes == null)
+                {
+                    new Task(() =>
+                    {
+                        bot.SendTextMessageAsync(Secrets.OwnerChatId,
+                            "Ошибка парсера Куфар, похоже опять изменилась разметка!, не смогли разобрать...",
+                            cancellationToken: cancellationToken);
+                    }).Start();
+                    return items;
+                }
             }
+
+
+            foreach (var node in nodes)
+            {
+                var item = new Item
+                {
+                    /*
+                    Name = node.TryGetNode("h3 .k-fxbJ-16e40", "h3 .k-pmvA-ebdbb", "h3 .k-oNeS-2bc8b",
+                        "h3 .k-gKhZ-c7dad", "h3 .k-VoRr-e2203")?.InnerText,
+                    //Name = node.QuerySelector("div .listing-item__about")?.QuerySelector("h3 a span")?.InnerText?.Replace("<!-- -->", ""),
+                    Image = node.QuerySelector("img")?.Attributes["data-src"]?.Value,
+                    Info = "",
+                    Price = node.TryGetNode("span .k-beVe-c6572", "span .k-hNKj-19b8b", "span .k-eRcp-1d52b",
+                        "span .k-gNUS-96512", "span .k-VleK-99b72")?.InnerText,
+                    Location = node.TryGetNode("span .k-fwEX-8b3f6", "span .k-pYsu-eb441", "span .k-oOUx-d4470",
+                        "span .k-geUH-549bc", "span .k-VaOA-c8871")?.InnerText,
+                    LastUpdate = node.TryGetNode("div .k-fFtb-c33c6", "div .k-pxsl-541ef", "div .k-oFUG-3b966",
+                        "div .k-gMUw-ffda9", "div .k-VJOZ-1a3f3")?.InnerText,
+                    Link = node.Attributes["href"]?.Value
+                    */
+                    Name = node.TryGetNode(Markup.Name)?.InnerText,
+                    Image = node.QuerySelector("img")?.Attributes["data-src"]?.Value,
+                    Info = "",
+                    Price = node.TryGetNode(Markup.Price)?.InnerText,
+                    Location = node.TryGetNode(Markup.Location)?.InnerText,
+                    LastUpdate = node.TryGetNode(Markup.LastUpdate)?.InnerText,
+                    Link = node.Attributes["href"]?.Value
+                };
+
+
+                //ShowItem(item);
+
+                items.Add(item);
+            }
+
+            Cache.AddOrUpdate(url, items);
 
             return items;
         }
