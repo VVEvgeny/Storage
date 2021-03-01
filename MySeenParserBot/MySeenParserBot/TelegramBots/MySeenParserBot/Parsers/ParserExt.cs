@@ -15,7 +15,7 @@ namespace MySeenParserBot.TelegramBots.MySeenParserBot.Parsers
                     return n;
             }
 
-            DebugGlobal.Write("Не нашли ни 1 попадания по селекторам, опять изменились ????");
+            DebugGlobal.Write("Не нашли ни 1 попадания по селекторам, опять изменились ????1");
             return null;
         }
         public static IList<HtmlNode> TryGetNodeAll(this HtmlNode node, params string[] selectors)
@@ -27,7 +27,7 @@ namespace MySeenParserBot.TelegramBots.MySeenParserBot.Parsers
                     return n;
             }
 
-            DebugGlobal.Write("Не нашли ни 1 попадания по селекторам, опять изменились ????");
+            DebugGlobal.Write("Не нашли ни 1 попадания по селекторам, опять изменились ????a1");
             return null;
         }
         public static IList<HtmlNode> TryGetNodeAll(this HtmlDocument node, params string[] selectors)
@@ -39,7 +39,7 @@ namespace MySeenParserBot.TelegramBots.MySeenParserBot.Parsers
                     return n;
             }
 
-            DebugGlobal.Write("Не нашли ни 1 попадания по селекторам, опять изменились ????");
+            DebugGlobal.Write("Не нашли ни 1 попадания по селекторам, опять изменились ????1");
             return null;
         }
     }

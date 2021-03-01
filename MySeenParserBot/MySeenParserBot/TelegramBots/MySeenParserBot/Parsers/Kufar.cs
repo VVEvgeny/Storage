@@ -30,6 +30,12 @@ namespace MySeenParserBot.TelegramBots.MySeenParserBot.Parsers
             public static string Price = "span .k-VleK-99b72";
             public static string Location = "span .k-VaOA-c8871";
             public static string LastUpdate = "div .k-VJOZ-1a3f3";
+
+            public static string ToStringNames()
+            {
+                return "List:" + List + " Name:" + Name + " Price:" + Price + " Location:" + Location + " LastUpdate:" +
+                       LastUpdate;
+            }
         }
         private static void ReloadMarkup(HtmlDocument doc)
         {
@@ -56,7 +62,24 @@ namespace MySeenParserBot.TelegramBots.MySeenParserBot.Parsers
 
                 //update
                 //document.getElementsByTagName('article')[0].getElementsByTagName('a')[0].getElementsByTagName('div')[22].className;
-                Markup.LastUpdate = "div ." + a.QuerySelectorAll("div")[22].GetClassList()[0];
+                /*
+                try
+                {
+                    Markup.LastUpdate = "div ." + a.QuerySelectorAll("div")[22].GetClassList()[0];
+                }
+                catch (Exception e)
+                {
+                    try
+                    {
+                        Markup.LastUpdate = "div ." + a.QuerySelectorAll("div")[19].GetClassList()[0];
+                    }
+                    catch (Exception ee)
+                    {
+                        //richTextBox1.Text += "LastUpdate EXCEPTION e=" + e.Message + Environment.NewLine;
+                    }
+                }
+                */
+
             }
             catch (Exception e)
             {
@@ -101,8 +124,36 @@ namespace MySeenParserBot.TelegramBots.MySeenParserBot.Parsers
                     }).Start();
                     return items;
                 }
-            }
 
+                new Task(() =>
+                {
+                    bot.SendTextMessageAsync(Secrets.OwnerChatId,
+                        "Успешно перезагружено, "+ Markup.ToStringNames() + " nodes.Count=" + nodes.Count,
+                        cancellationToken: cancellationToken);
+                }).Start();
+
+                if (nodes.Count > 0)
+                {
+                    new Task(() =>
+                    {
+                        bot.SendTextMessageAsync(Secrets.OwnerChatId,
+                            "Первая перезагруженная объявка: " + Environment.NewLine
+                                                               + ShowItem(new Item
+                                                               {
+                                                                   Name = nodes[0].TryGetNode(Markup.Name)?.InnerText,
+                                                                   Image = nodes[0].QuerySelector("img")
+                                                                       ?.Attributes["data-src"]?.Value,
+                                                                   Info = "",
+                                                                   Price = nodes[0].TryGetNode(Markup.Price)?.InnerText,
+                                                                   Location = nodes[0].TryGetNode(Markup.Location)
+                                                                       ?.InnerText,
+                                                                   //LastUpdate = nodes[0].TryGetNode(Markup.LastUpdate)?.InnerText,
+                                                                   Link = nodes[0].Attributes["href"]?.Value
+                                                               }),
+                            cancellationToken: cancellationToken);
+                    }).Start();
+                }
+            }
 
             foreach (var node in nodes)
             {
@@ -127,7 +178,7 @@ namespace MySeenParserBot.TelegramBots.MySeenParserBot.Parsers
                     Info = "",
                     Price = node.TryGetNode(Markup.Price)?.InnerText,
                     Location = node.TryGetNode(Markup.Location)?.InnerText,
-                    LastUpdate = node.TryGetNode(Markup.LastUpdate)?.InnerText,
+                    //LastUpdate = node.TryGetNode(Markup.LastUpdate)?.InnerText,
                     Link = node.Attributes["href"]?.Value
                 };
 
