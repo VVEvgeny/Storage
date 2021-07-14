@@ -41,8 +41,6 @@ namespace MySeenParserBot.TelegramBots.MySeenParserBot
             };
         }
 
-
-
         private CancellationTokenSource _cancelTokenSource;
 
         public static HashSet<long> AcceptedUsers = new HashSet<long>()
@@ -50,13 +48,7 @@ namespace MySeenParserBot.TelegramBots.MySeenParserBot
             Secrets.OwnerChatId
         };
 
-        public static Dictionary<long, string> KnownUserNames = new Dictionary<long, string>()
-        {
-            { Secrets.OwnerChatId, Secrets.OwnerChatName },
-            { Secrets.FrineChatId1, Secrets.FrineChatName1 },
-            { Secrets.FrineChatId2, Secrets.FrineChatName2 },
-            { Secrets.FrineChatId3, Secrets.FrineChatName3 },
-        };
+        public static Dictionary<long, string> KnownUserNames = new Dictionary<long, string>(Secrets.Friends);
 
         public BotTasks BotTasks;
 
@@ -142,13 +134,7 @@ namespace MySeenParserBot.TelegramBots.MySeenParserBot
                 }
                 catch (Exception e)
                 {
-                    KnownUserNames = new Dictionary<long, string>()
-                    {
-                        { Secrets.OwnerChatId, Secrets.OwnerChatName },
-                        { Secrets.FrineChatId1, Secrets.FrineChatName1 },
-                        { Secrets.FrineChatId2, Secrets.FrineChatName2 },
-                        { Secrets.FrineChatId3, Secrets.FrineChatName3 },
-                    };
+                    KnownUserNames = new Dictionary<long, string>(Secrets.Friends);
 
                     _writeDebugInfo?.Invoke("LoadAcceptedUsers exception e=" + e.Message);
                 }
@@ -241,7 +227,7 @@ namespace MySeenParserBot.TelegramBots.MySeenParserBot
             if (_cancelTokenSource == null)
                 return false;
 
-            _botClient.SendTextMessageAsync(Secrets.OwnerChatId, "I'm offline");
+            _botClient.SendTextMessageAsync(Secrets.OwnerChatId, "I'm offline on: " + Environment.MachineName);
 
             SaveStorage();
             SaveAcceptedUsers();
@@ -344,14 +330,15 @@ namespace MySeenParserBot.TelegramBots.MySeenParserBot
 
         private async void Service(CancellationToken cancellationToken)
         {
-            _writeDebugInfo?.Invoke("Service started!");
+            _writeDebugInfo?.Invoke("Service started! ");
 
             _botClient = new TelegramBotClient(Secrets.MySeenParserBotToken);
             _botClient.OnMessage += BotOnMessageReceived;
             _botClient.OnMessageEdited += BotOnMessageReceived;
             _botClient.StartReceiving(cancellationToken: cancellationToken);
 
-            await _botClient.SendTextMessageAsync(Secrets.OwnerChatId, "I'm online", cancellationToken: cancellationToken);
+            await _botClient.SendTextMessageAsync(Secrets.OwnerChatId, "I'm online from:" + Environment.MachineName,
+                cancellationToken: cancellationToken);
 
             LoadStorage();
             LoadAcceptedUsers();

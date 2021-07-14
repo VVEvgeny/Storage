@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
 
@@ -10,11 +11,11 @@ namespace MySeenParserBot
         /// The main entry point for the application.
         /// </summary>
         [STAThread]
-        static void Main()
+        static void Main(string[] args)
         {
-            AppDomain.CurrentDomain.AssemblyResolve += ((sender, args) =>
+            AppDomain.CurrentDomain.AssemblyResolve += ((sender, eventArgs) =>
             {
-                var dllName = args.Name.Contains(",") ? args.Name.Substring(0, args.Name.IndexOf(',')) : args.Name.Replace(".dll", "");
+                var dllName = eventArgs.Name.Contains(",") ? eventArgs.Name.Substring(0, eventArgs.Name.IndexOf(',')) : eventArgs.Name.Replace(".dll", "");
                 dllName = dllName.Replace(".", "_");
                 if (dllName.EndsWith("_resources"))
                     return null;
@@ -28,15 +29,22 @@ namespace MySeenParserBot
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            try
+            //if (args.Contains("-service"))
             {
-                Application.Run(new MainForm());
+
             }
-            catch (Exception e)
+            //else
             {
-                MessageBox.Show("EXCEPTION e=" + e.Message);
-                MessageBox.Show("InnerException e=" + e.InnerException?.Message);
-                throw;
+                try
+                {
+                    Application.Run(new MainForm());
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show("EXCEPTION e=" + e.Message);
+                    MessageBox.Show("InnerException e=" + e.InnerException?.Message);
+                    throw;
+                }
             }
         }
     }
