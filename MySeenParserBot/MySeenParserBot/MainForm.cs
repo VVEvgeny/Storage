@@ -5,6 +5,8 @@ using System.Reflection;
 using System.Threading;
 using System.Windows.Forms;
 using MySeenParserBot.TelegramBots.MySeenParserBot;
+using STDClientLib;
+using STDClientLib.MyCommands;
 
 namespace MySeenParserBot
 {
@@ -13,6 +15,28 @@ namespace MySeenParserBot
         public MainForm()
         {
             InitializeComponent();
+
+            var c = new MyCommands();
+            c.AddCommand(new Exit());
+            _std = new StdInteract(Console.In, Write, c, null);
+        }
+        public class Exit : IMyCommands
+        {
+            public string Name => "Exit";
+
+            public string Action(string str)
+            {
+                Application.Exit();
+                return "Ok";
+            }
+        }
+        private void Write(string s)
+        {
+            lock (Console.Out)
+            {
+                Console.WriteLine(s);
+                Console.Out.Flush();
+            }
         }
 
         private static Bot _bot = new Bot();
@@ -76,14 +100,19 @@ namespace MySeenParserBot
         {
             _bot?.StopService();
             Hide();
+
+            _std.Stop();
             Thread.Sleep(1000);
         }
 
-        private void MainForm_Load(object sender, EventArgs e)
+        private readonly StdInteract _std;
+        private async void MainForm_Load(object sender, EventArgs e)
         {
             buttonStartService_Click(sender, e);
             DebugGlobal.WriteDebug = WriteDebugToFile;
             DebugGlobal.WriteDebug += WriteRichText;
+
+            await _std.StartAsync();
         }
 
         private void MainForm_Resize(object sender, EventArgs e)

@@ -248,3 +248,4 @@ ModelManifest.xml
 /MySeenParserBot/MySeenParserBot/lib/Newtonsoft.Json.dll
 /MySeenParserBot/MySeenParserBot/lib/HtmlAgilityPack.dll
 /MySeenParserBot/MySeenParserBot/lib/HtmlAgilityPack.CssSelectors.dll
+/stdcontrols/TelegramBots/MySeenParserBot/Secrets.cs

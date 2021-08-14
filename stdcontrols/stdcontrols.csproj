@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{87EC5A98-D168-4A47-86DD-EDE97F9F6F45}</ProjectGuid>
+    <ProjectGuid>{E49C42EF-9858-4E47-AA7D-B27BF9AE0A42}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>MySeenParserBot</RootNamespace>
-    <AssemblyName>MySeenParserBot</AssemblyName>
+    <RootNamespace>stdcontrols</RootNamespace>
+    <AssemblyName>stdcontrols</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -33,23 +33,17 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="HtmlAgilityPack, Version=1.4.9.0, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>lib\HtmlAgilityPack.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="HtmlAgilityPack.CssSelectors, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>lib\HtmlAgilityPack.CssSelectors.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>lib\Newtonsoft.Json.dll</HintPath>
-      <Private>False</Private>
+      <HintPath>packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.4.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>packages\System.Runtime.CompilerServices.Unsafe.4.5.3\lib\net461\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>packages\System.Threading.Tasks.Extensions.4.5.4\lib\net461\System.Threading.Tasks.Extensions.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -59,50 +53,30 @@
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
-    <Reference Include="Telegram.Bot, Version=15.7.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>lib\Telegram.Bot.dll</HintPath>
-      <Private>False</Private>
-      <EmbedInteropTypes>False</EmbedInteropTypes>
+    <Reference Include="Telegram.Bot, Version=16.0.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\Telegram.Bot.16.0.2\lib\net45\Telegram.Bot.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DebugGlobal.cs" />
-    <Compile Include="MainForm.cs">
+    <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="MainForm.Designer.cs">
-      <DependentUpon>MainForm.cs</DependentUpon>
+    <Compile Include="Form1.Designer.cs">
+      <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TelegramBots\MySeenParserBot\Commands\RunCommand.cs" />
+    <Compile Include="TelegramBots\MySeenParserBot\Commands\SendCommand.cs" />
+    <Compile Include="TelegramBots\Tasks.cs" />
     <Compile Include="TelegramBots\MySeenParserBot\Bot.cs" />
-    <Compile Include="TelegramBots\MySeenParserBot\BotTasks.cs" />
-    <Compile Include="TelegramBots\MySeenParserBot\Commands\AddCommand.cs" />
     <Compile Include="TelegramBots\MySeenParserBot\Commands\CommandBase.cs" />
     <Compile Include="TelegramBots\MySeenParserBot\Commands\ListCommand.cs" />
-    <Compile Include="TelegramBots\MySeenParserBot\Commands\OnlyOwner\AddUserNameCommand.cs" />
-    <Compile Include="TelegramBots\MySeenParserBot\Commands\OnlyOwner\AddUserCommand.cs" />
-    <Compile Include="TelegramBots\MySeenParserBot\Commands\OnlyOwner\ListAllCommand.cs" />
-    <Compile Include="TelegramBots\MySeenParserBot\Commands\OnlyOwner\UnPauseAllTasksCommand.cs" />
-    <Compile Include="TelegramBots\MySeenParserBot\Commands\OnlyOwner\PauseAllTasksCommand.cs" />
-    <Compile Include="TelegramBots\MySeenParserBot\Commands\OnlyOwner\StopAllTasksCommand.cs" />
-    <Compile Include="TelegramBots\MySeenParserBot\Commands\UnPauseAllCommand.cs" />
-    <Compile Include="TelegramBots\MySeenParserBot\Commands\PauseAllCommand.cs" />
-    <Compile Include="TelegramBots\MySeenParserBot\Commands\UnPauseCommand.cs" />
-    <Compile Include="TelegramBots\MySeenParserBot\Commands\PauseCommand.cs" />
     <Compile Include="TelegramBots\MySeenParserBot\Commands\StartCommand.cs" />
-    <Compile Include="TelegramBots\MySeenParserBot\Commands\StopAllCommand.cs" />
     <Compile Include="TelegramBots\MySeenParserBot\Commands\StopCommand.cs" />
-    <Compile Include="TelegramBots\MySeenParserBot\Parsers\AV_BY.cs" />
-    <Compile Include="TelegramBots\MySeenParserBot\Parsers\CacheWebItem.cs" />
-    <Compile Include="TelegramBots\MySeenParserBot\Parsers\IParser.cs" />
-    <Compile Include="TelegramBots\MySeenParserBot\Parsers\Kufar.cs" />
-    <Compile Include="TelegramBots\MySeenParserBot\Parsers\ParserBase.cs" />
-    <Compile Include="TelegramBots\MySeenParserBot\Parsers\ParserExt.cs" />
     <Compile Include="TelegramBots\MySeenParserBot\Secrets.cs" />
-    <EmbeddedResource Include="MainForm.resx">
-      <DependentUpon>MainForm.cs</DependentUpon>
+    <EmbeddedResource Include="Form1.resx">
+      <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -112,7 +86,6 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
     </Compile>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
@@ -129,16 +102,11 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\STDClientLib\STDClientLib.csproj">
-      <Project>{deb04096-5863-415c-ab6a-468acd7c6c3b}</Project>
+    <ProjectReference Include="..\STDClientLib\STDClientLib.csproj">
+      <Project>{3f09c21b-2233-4f94-ac29-6ace9702b595}</Project>
       <Name>STDClientLib</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <None Include="bin\Debug\STDClientLib.dll" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\STDClientLib.dll" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

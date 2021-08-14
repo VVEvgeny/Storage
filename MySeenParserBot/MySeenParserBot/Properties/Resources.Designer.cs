@@ -93,6 +93,16 @@ namespace MySeenParserBot.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
+        internal static byte[] STDClientLib {
+            get {
+                object obj = ResourceManager.GetObject("STDClientLib", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
         internal static byte[] Telegram_Bot {
             get {
                 object obj = ResourceManager.GetObject("Telegram_Bot", resourceCulture);
