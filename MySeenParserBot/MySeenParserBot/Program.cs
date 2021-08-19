@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Reflection;
 using System.Windows.Forms;
 
 namespace MySeenParserBot
@@ -12,18 +11,8 @@ namespace MySeenParserBot
         [STAThread]
         static void Main(string[] args)
         {
-            AppDomain.CurrentDomain.AssemblyResolve += ((sender, eventArgs) =>
-            {
-                var dllName = eventArgs.Name.Contains(",") ? eventArgs.Name.Substring(0, eventArgs.Name.IndexOf(',')) : eventArgs.Name.Replace(".dll", "");
-                dllName = dllName.Replace(".", "_");
-                if (dllName.EndsWith("_resources"))
-                    return null;
-
-                //var rm = new System.Resources.ResourceManager(GetType().Namespace + ".Properties.Resources", Assembly.GetExecutingAssembly());
-                var rm = new System.Resources.ResourceManager(typeof(Program).Namespace + ".Properties.Resources", Assembly.GetExecutingAssembly());
-                var bytes = (byte[])rm.GetObject(dllName);
-                return Assembly.Load(bytes);
-            });
+            // ReSharper disable once ObjectCreationAsStatement
+            new AssemblyResolver();
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
@@ -40,8 +29,8 @@ namespace MySeenParserBot
                 }
                 catch (Exception e)
                 {
-                    MessageBox.Show("EXCEPTION e=" + e.Message);
-                    MessageBox.Show("InnerException e=" + e.InnerException?.Message);
+                    MessageBox.Show(@"EXCEPTION e=" + e.Message);
+                    MessageBox.Show(@"InnerException e=" + e.InnerException?.Message);
                     throw;
                 }
             }
