@@ -132,6 +132,7 @@
     <ProjectReference Include="..\..\STDClientLib\STDClientLib.csproj">
       <Project>{deb04096-5863-415c-ab6a-468acd7c6c3b}</Project>
       <Name>STDClientLib</Name>
+      <Private>False</Private>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

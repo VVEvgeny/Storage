@@ -1,5 +1,4 @@
 ﻿using System.Threading.Tasks;
-using Telegram.Bot;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 
@@ -12,11 +11,11 @@ namespace MySeenParserBot.TelegramBots.MySeenParserBot.Commands.OnlyOwner
         public override bool IsOnlyForOwner => true;
         public override MessageType MessageType => MessageType.Text;
 
-        public override async Task Execute(Message message, Bot bot, TelegramBotClient botClient)
+        public override async Task Execute(Message message, Bot botClient)
         {
-            bot.BotTasks.RemoveAllTasks();
+            botClient.BotTasks.RemoveAllTasks();
             await botClient.SendTextMessageAsync(message.Chat.Id,
-                "Работа остановлена");
+                "Работа остановлена", botClient.GetCancellationToken());
         }
     }
 }

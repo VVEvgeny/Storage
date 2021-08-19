@@ -2,14 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
-using System.Threading.Tasks;
 using HtmlAgilityPack;
 using Newtonsoft.Json;
-using Telegram.Bot;
 
 namespace MySeenParserBot.TelegramBots.MySeenParserBot.Parsers
 {
-    public class AV_BY: ParserBase, IParser
+    public class AV_BY: ParserBase
     {
         [Serializable]
         private class Car
@@ -234,8 +232,8 @@ namespace MySeenParserBot.TelegramBots.MySeenParserBot.Parsers
         //1й раз не показываем этот огромный список!
         private readonly HashSet<string> _running = new HashSet<string>();
 
-        public async void ProcessTask(long userId, BotTasks.BotTask task,
-            TelegramBotClient bot, CancellationToken cancellationToken, BotTasks.SaveDataProcessTaskDelegate saveDataProcessTask, BotTasks.OnDeleteWithParsingDelegate onDeleteWithParsing)
+        public override async void ProcessTask(long userId, BotTasks.BotTask task,
+            Bot bot, CancellationToken cancellationToken, BotTasks.SaveDataProcessTaskDelegate saveDataProcessTask, BotTasks.OnDeleteWithParsingDelegate onDeleteWithParsing)
         {
             try
             {
@@ -314,6 +312,6 @@ namespace MySeenParserBot.TelegramBots.MySeenParserBot.Parsers
             }
         }
 
-        public string AcceptLink => "https://cars.av.by/";
+        public override string AcceptLink => "https://cars.av.by/";
     }
 }

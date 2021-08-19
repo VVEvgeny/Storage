@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Telegram.Bot;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 
@@ -14,7 +13,7 @@ namespace MySeenParserBot.TelegramBots.MySeenParserBot.Commands.OnlyOwner
 
         public override MessageType MessageType => MessageType.Text;
 
-        public override async Task Execute(Message message, Bot bot, TelegramBotClient botClient)
+        public override async Task Execute(Message message, Bot botClient)
         {
             //addusername 123123123 name
             try
@@ -38,7 +37,7 @@ namespace MySeenParserBot.TelegramBots.MySeenParserBot.Commands.OnlyOwner
                     }
 
                     await botClient.SendTextMessageAsync(message.Chat.Id,
-                        "Успешно " + (isNew ? "добавлено" : "обновлено") + " имя");
+                        "Успешно " + (isNew ? "добавлено" : "обновлено") + " имя", botClient.GetCancellationToken());
                     return;
                 }
             }
@@ -48,7 +47,7 @@ namespace MySeenParserBot.TelegramBots.MySeenParserBot.Commands.OnlyOwner
             }
 
             await botClient.SendTextMessageAsync(message.Chat.Id,
-                "Ошибка, не смогли добавить/обновить имя");
+                "Ошибка, не смогли добавить/обновить имя", botClient.GetCancellationToken());
         }
     }
 }

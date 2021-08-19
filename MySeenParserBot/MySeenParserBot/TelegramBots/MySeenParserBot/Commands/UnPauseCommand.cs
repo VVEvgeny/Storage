@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Telegram.Bot;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 
@@ -13,7 +12,7 @@ namespace MySeenParserBot.TelegramBots.MySeenParserBot.Commands
         public override bool IsOnlyForOwner => false;
         public override MessageType MessageType => MessageType.Text;
 
-        public override async Task Execute(Message message, Bot bot, TelegramBotClient botClient)
+        public override async Task Execute(Message message, Bot botClient)
         {
             int id;
             try
@@ -22,17 +21,17 @@ namespace MySeenParserBot.TelegramBots.MySeenParserBot.Commands
             }
             catch (Exception)
             {
-                await botClient.SendTextMessageAsync(message.Chat.Id, "Ошибка удаления, не разобрал номер задачи");
+                await botClient.SendTextMessageAsync(message.Chat.Id, "Ошибка удаления, не разобрал номер задачи", botClient.GetCancellationToken());
                 return;
             }
 
-            if (bot.BotTasks.UnPauseMyTask(message.Chat.Id, id))
+            if (botClient.BotTasks.UnPauseMyTask(message.Chat.Id, id))
             {
-                await botClient.SendTextMessageAsync(message.Chat.Id,"Успешно возобновлено");
+                await botClient.SendTextMessageAsync(message.Chat.Id,"Успешно возобновлено", botClient.GetCancellationToken());
             }
             else
             {
-                await botClient.SendTextMessageAsync(message.Chat.Id, "Ошибка возобновления");
+                await botClient.SendTextMessageAsync(message.Chat.Id, "Ошибка возобновления", botClient.GetCancellationToken());
             }
         }
     }

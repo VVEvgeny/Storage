@@ -5,11 +5,10 @@ using System.Threading;
 using System.Threading.Tasks;
 using HtmlAgilityPack;
 using Newtonsoft.Json;
-using Telegram.Bot;
 
 namespace MySeenParserBot.TelegramBots.MySeenParserBot.Parsers
 {
-    public class Kufar: ParserBase, IParser
+    public class Kufar: ParserBase
     {
         [Serializable]
         private class Item
@@ -19,7 +18,7 @@ namespace MySeenParserBot.TelegramBots.MySeenParserBot.Parsers
             public string Info;
             public string Link;
             public string Location;
-            public string LastUpdate;
+            //public string LastUpdate;
             public string Price;
         }
 
@@ -81,7 +80,7 @@ namespace MySeenParserBot.TelegramBots.MySeenParserBot.Parsers
                 */
 
             }
-            catch (Exception e)
+            catch// (Exception e)
             {
                 //richTextBox1.Text += "EXCEPTION e=" + e.Message + Environment.NewLine;
             }
@@ -89,7 +88,7 @@ namespace MySeenParserBot.TelegramBots.MySeenParserBot.Parsers
 
         private static CacheWebItemStorage<Item> Cache = new CacheWebItemStorage<Item>();
 
-        private static List<Item> GetItemsFromWeb(string url, TelegramBotClient bot,
+        private static List<Item> GetItemsFromWeb(string url, Bot bot,
             CancellationToken cancellationToken)
         {
             if (Cache.ContainsActual(url))
@@ -202,7 +201,7 @@ namespace MySeenParserBot.TelegramBots.MySeenParserBot.Parsers
             ret += "Хар-ки: " + item.Info + Environment.NewLine;
             ret += "Цена: " + item.Price + Environment.NewLine;
             ret += "Где: " + item.Location + Environment.NewLine;
-            ret += "Обновлено: " + item.LastUpdate + Environment.NewLine;
+            //ret += "Обновлено: " + item.LastUpdate + Environment.NewLine;
             ret += "Ссылка: " + item.Link + Environment.NewLine;
             return ret;
         }
@@ -219,7 +218,7 @@ namespace MySeenParserBot.TelegramBots.MySeenParserBot.Parsers
             public bool Image;
             public bool Info;
             public bool Location;
-            public bool LastUpdate = false;
+            //public bool LastUpdate = false;
             public bool Price;
         }
         private static List<ItemDiff> CompareItems(List<Item> fromStorage, List<Item> fromWeb)
@@ -299,16 +298,18 @@ namespace MySeenParserBot.TelegramBots.MySeenParserBot.Parsers
                 messageToBot += "Где Было:" + card.InStorage.Location + " Стало:" +
                                 card.InWeb.Location + Environment.NewLine;
 
+            /*
             if (card.LastUpdate)
                 messageToBot += "Обновлено Было:" + card.InStorage.LastUpdate + " Стало:" +
                                 card.InWeb.LastUpdate + Environment.NewLine;
+                                */
 
             return messageToBot;
         }
 
         //1й раз не показываем этот огромный список!
         private readonly HashSet<string> _running = new HashSet<string>();
-        public async void ProcessTask(long userId, BotTasks.BotTask task, TelegramBotClient bot, CancellationToken cancellationToken,
+        public override async void ProcessTask(long userId, BotTasks.BotTask task, Bot bot, CancellationToken cancellationToken,
             BotTasks.SaveDataProcessTaskDelegate saveDataProcessTask, BotTasks.OnDeleteWithParsingDelegate onDeleteWithParsing)
         {
             try
@@ -390,6 +391,6 @@ namespace MySeenParserBot.TelegramBots.MySeenParserBot.Parsers
             }
         }
 
-        public string AcceptLink => "https://www.kufar.by/";
+        public override string AcceptLink => "https://www.kufar.by/";
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -10,38 +11,52 @@ using MySeenParserBot.TelegramBots.MySeenParserBot.Parsers;
 using Newtonsoft.Json;
 using Telegram.Bot;
 using Telegram.Bot.Args;
+using Telegram.Bot.Types;
+using File = System.IO.File;
 
 namespace MySeenParserBot.TelegramBots.MySeenParserBot
 {
     public class Bot
     {
+        [SuppressMessage("ReSharper", "ObjectCreationAsStatement")]
+        static Bot()
+        {
+            //only owner
+            new AddUserNameCommand();
+            new AddUserCommand();
+            new ListAllCommand();//+status service
+            new UnPauseAllTasksCommand();
+            new PauseAllTasksCommand();
+            new StopAllTasksCommand();
+            //all
+            new StartCommand();
+            new AddCommand();
+            new UnPauseAllCommand();
+            new UnPauseCommand();
+            new PauseAllCommand();
+            new PauseCommand();
+            new StopAllCommand();
+            new StopCommand();
+            new ListCommand();
+
+
+            //parsers
+            new AV_BY();
+            new Kufar();
+        }
+
+
         public Bot()
         {
             BotTasks = new BotTasks();
-
-            _commandsList = new List<CommandBase>
-            {
-                //only owner
-                new AddUserNameCommand(),
-                new AddUserCommand(),
-                new ListAllCommand(),//+status service
-                new UnPauseAllTasksCommand(),
-                new PauseAllTasksCommand(),
-                new StopAllTasksCommand(),
-                //all
-                new StartCommand(),
-                new AddCommand(),
-                new UnPauseAllCommand(),
-                new UnPauseCommand(),
-                new PauseAllCommand(),
-                new PauseCommand(),
-                new StopAllCommand(),
-                new StopCommand(),
-                new ListCommand()
-            };
         }
 
         private CancellationTokenSource _cancelTokenSource;
+
+        public CancellationToken GetCancellationToken()
+        {
+            return _cancelTokenSource.Token;
+        }
 
         public static HashSet<long> AcceptedUsers = new HashSet<long>()
         {
@@ -52,12 +67,12 @@ namespace MySeenParserBot.TelegramBots.MySeenParserBot
 
         public BotTasks BotTasks;
 
-        private static List<CommandBase> _commandsList;
+        //private static List<CommandBase> _commandsList;
         public static string AvailableCommands(bool forOwner)
         {
             string ret = "Доступные команды бота:" + Environment.NewLine;
 
-            foreach (var c in Commands)
+            foreach (var c in CommandBase.Commands)
             {
                 if (!c.IsOnlyForOwner || forOwner)
                 {
@@ -69,7 +84,7 @@ namespace MySeenParserBot.TelegramBots.MySeenParserBot
             return ret;
         }
 
-        public static IReadOnlyList<CommandBase> Commands => _commandsList.AsReadOnly();
+        //public static IReadOnlyList<CommandBase> Commands => _commandsList.AsReadOnly();
 
         public delegate void WriteDebugInfo(string message);
 
@@ -216,7 +231,7 @@ namespace MySeenParserBot.TelegramBots.MySeenParserBot
             }
             catch (Exception e)
             {
-                _botClient.SendTextMessageAsync(Secrets.OwnerChatId, "TASK Start EXCEPTION e=" + e.Message);
+                SendTextMessageAsync(Secrets.OwnerChatId, "TASK Start EXCEPTION e=" + e.Message, _cancelTokenSource.Token);
             }
 
             return true;
@@ -227,7 +242,8 @@ namespace MySeenParserBot.TelegramBots.MySeenParserBot
             if (_cancelTokenSource == null)
                 return false;
 
-            _botClient.SendTextMessageAsync(Secrets.OwnerChatId, "I'm offline on: " + Environment.MachineName);
+            SendTextMessageAsync(Secrets.OwnerChatId, "I'm offline on: " + Environment.MachineName, _cancelTokenSource.Token);
+            Thread.Sleep(100);//else _cancelTokenSource.Cancel(); rather than send....
 
             SaveStorage();
             SaveAcceptedUsers();
@@ -249,15 +265,15 @@ namespace MySeenParserBot.TelegramBots.MySeenParserBot
 
             if (!AcceptedUsers.Contains(message.Chat.Id))
             {
-                await _botClient.SendTextMessageAsync(message.Chat.Id, "Это приватный бот, необходимо получить на него разрешение");
+                await SendTextMessageAsync(message.Chat.Id, "Это приватный бот, необходимо получить на него разрешение", _cancelTokenSource.Token);
 
-                await _botClient.SendTextMessageAsync(Secrets.OwnerChatId, "Кто-то ломиться в бота без разрешения: " + message.Chat.Id);
+                await SendTextMessageAsync(Secrets.OwnerChatId, "Кто-то ломиться в бота без разрешения: " + message.Chat.Id + " command=" + message.Text, _cancelTokenSource.Token);
 
                 return;
             }
 
             bool processed = false;
-            foreach (var command in Commands)
+            foreach (var command in CommandBase.Commands)
             {
                 if (command.IsItMyCommand(message))
                 {
@@ -265,24 +281,24 @@ namespace MySeenParserBot.TelegramBots.MySeenParserBot
                     {
                         if (command.IsOnlyForOwner && message.Chat.Id != Secrets.OwnerChatId)
                         {
-                            await _botClient.SendTextMessageAsync(message.Chat.Id, "Это действие доступно только владельцу");
+                            await SendTextMessageAsync(message.Chat.Id, "Это действие доступно только владельцу", _cancelTokenSource.Token);
 
-                            await _botClient.SendTextMessageAsync(Secrets.OwnerChatId, "Кто-то ломиться в бота командой владельца: " + message.Chat.Id + " command=" + message.Text);
+                            await SendTextMessageAsync(Secrets.OwnerChatId, "Кто-то ломиться в бота командой владельца: " + message.Chat.Id + " command=" + message.Text, _cancelTokenSource.Token);
 
                             return;
                         }
 
-                        await command.Execute(message, this, _botClient);
+                        await command.Execute(message, this);
                     }
                     catch (Exception e)
                     {
-                        await _botClient.SendTextMessageAsync(message.Chat.Id, GetType().Name + " Не смог обработать запрос, обновите его или обратитесь к администратору");
+                        await SendTextMessageAsync(message.Chat.Id, GetType().Name + " Не смог обработать запрос, обновите его или обратитесь к администратору", _cancelTokenSource.Token);
 
-                        await _botClient.SendTextMessageAsync(Secrets.OwnerChatId, "Ошибка контролера EXCEPTION:" + e.Message
-                                                                                                             + " userId=" + message.Chat.Id
-                                                                                                             + " message.Text=" + message.Text
-                                                                                                             + " command=" + command.Name
-                                                                                                   );
+                        await SendTextMessageAsync(Secrets.OwnerChatId, "Ошибка контролера EXCEPTION:" + e.Message
+                                                                                                          + " userId=" + message.Chat.Id
+                                                                                                          + " message.Text=" + message.Text
+                                                                                                          + " command=" + command.Name
+                            , _cancelTokenSource.Token);
                     }
                     processed = true;
                     break;
@@ -291,7 +307,7 @@ namespace MySeenParserBot.TelegramBots.MySeenParserBot
 
             if (!processed)
             {
-                await _botClient.SendTextMessageAsync(message.Chat.Id, "Команда не распознана, для начала работы вызовите /start");
+                await SendTextMessageAsync(message.Chat.Id, "Команда не распознана, для начала работы вызовите /start", _cancelTokenSource.Token);
             }
         }
         //service
@@ -305,29 +321,42 @@ namespace MySeenParserBot.TelegramBots.MySeenParserBot
             SaveStorage();
         }
 
-        private static readonly object AvailableParsersLoad = new object();
-        private static List<IParser> _availableParsers;
-        public static List<IParser> AvailableParsers
+        public Task<Message> SendTextMessageAsync(ChatId chatId, string message,
+            CancellationToken cancellationToken)
         {
-            get
+            if (message.Length > 4000)
             {
-                lock (AvailableParsersLoad)
+                _botClient.SendTextMessageAsync(Secrets.OwnerChatId, "Анреальное сообщение, надо разбираться",
+                    cancellationToken: cancellationToken);
+
+                int i = 1;
+                while (true)
                 {
-                    if (_availableParsers == null)
+                    if (message.Length > 4000)
                     {
-                        _availableParsers = new List<IParser>
-                        {
-                            new AV_BY(), 
-                            new Kufar()
-                        };
+                        _botClient.SendTextMessageAsync(Secrets.OwnerChatId, "BigMsg: part:" + i + " msg:" + message.Substring(0, 4000),
+                            cancellationToken: cancellationToken);
                     }
+                    else
+                    {
+                        _botClient.SendTextMessageAsync(Secrets.OwnerChatId, "BigMsg: part:" + i + " msg:" + message,
+                            cancellationToken: cancellationToken);
+                        break;
+                    }
+
+                    message = message.Remove(0, 4000);
+                    i++;
                 }
 
-                return _availableParsers;
+                return _botClient.SendTextMessageAsync(Secrets.OwnerChatId,
+                    "Конец, сообщение не было отправлено польователю:" + chatId,
+                    cancellationToken: cancellationToken);
             }
+
+            return _botClient.SendTextMessageAsync(chatId, message,
+                cancellationToken: cancellationToken);
         }
-
-
+        
         private async void Service(CancellationToken cancellationToken)
         {
             _writeDebugInfo?.Invoke("Service started! ");
@@ -337,8 +366,8 @@ namespace MySeenParserBot.TelegramBots.MySeenParserBot
             _botClient.OnMessageEdited += BotOnMessageReceived;
             _botClient.StartReceiving(cancellationToken: cancellationToken);
 
-            await _botClient.SendTextMessageAsync(Secrets.OwnerChatId, "I'm online from:" + Environment.MachineName,
-                cancellationToken: cancellationToken);
+            await SendTextMessageAsync(Secrets.OwnerChatId, "I'm online from:" + Environment.MachineName,
+                cancellationToken);
 
             LoadStorage();
             LoadAcceptedUsers();
@@ -386,20 +415,20 @@ namespace MySeenParserBot.TelegramBots.MySeenParserBot
 
                                         var i1 = i;
 
-                                        var parser = AvailableParsers.FirstOrDefault(p => activeTask.Value[i].Request.StartsWith(p.AcceptLink));
+                                        var parser = ParserBase.Parsers.FirstOrDefault(p => activeTask.Value[i].Request.StartsWith(p.AcceptLink));
                                         if (parser != null)
                                         {
                                             new Task(() =>
                                             {
                                                 //AV_BY.ProcessTask(activeTask.Key, activeTask.Value[i1], _botClient, _cancelTokenSource.Token, BotTasks.SaveDataProcessTask, BotTasks.OnDeleteWithParsing);
-                                                parser.ProcessTask(activeTask.Key, activeTask.Value[i1], _botClient, _cancelTokenSource.Token, BotTasks.SaveDataProcessTask, BotTasks.OnDeleteWithParsing);
+                                                parser.ProcessTask(activeTask.Key, activeTask.Value[i1], this, _cancelTokenSource.Token, BotTasks.SaveDataProcessTask, BotTasks.OnDeleteWithParsing);
                                             }).Start();
                                         }
                                         else
                                         {
                                             new Task(() =>
                                             {
-                                                _botClient.SendTextMessageAsync(Secrets.OwnerChatId, "Ошибка Сервиса  НЕ найден ПАРСЕР !!!", cancellationToken: cancellationToken);
+                                                SendTextMessageAsync(Secrets.OwnerChatId, "Ошибка Сервиса  НЕ найден ПАРСЕР !!!", cancellationToken: cancellationToken);
                                             }).Start();
                                             new Task(() =>
                                             {
@@ -421,7 +450,7 @@ namespace MySeenParserBot.TelegramBots.MySeenParserBot
                 }
                 catch (Exception e)
                 {
-                    await _botClient.SendTextMessageAsync(Secrets.OwnerChatId, "Ошибка Сервиса ! EXCEPTION:" + e.Message, cancellationToken: cancellationToken);
+                    await SendTextMessageAsync(Secrets.OwnerChatId, "Ошибка Сервиса ! EXCEPTION:" + e.Message, cancellationToken: cancellationToken);
                 }
 
                 _updateServiceStatus?.Invoke(DateTime.Now.ToLongTimeString()

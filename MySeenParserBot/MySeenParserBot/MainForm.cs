@@ -39,7 +39,7 @@ namespace MySeenParserBot
             }
         }
 
-        private static Bot _bot = new Bot();
+        private static Bot _bot;
 
         private void WriteRichText(string text)
         {
