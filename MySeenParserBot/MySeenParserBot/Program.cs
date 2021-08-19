@@ -12,7 +12,7 @@ namespace MySeenParserBot
         static void Main(string[] args)
         {
             // ReSharper disable once ObjectCreationAsStatement
-            new AssemblyResolver();
+            new AssemblyResolver(typeof(Program).Namespace);
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);

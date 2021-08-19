@@ -5,7 +5,8 @@ namespace MySeenParserBot
 {
     class AssemblyResolver
     {
-        public AssemblyResolver()
+        // ReSharper disable once InconsistentNaming
+        public AssemblyResolver(string _namespace)
         {
             AppDomain.CurrentDomain.AssemblyResolve += ((sender, eventArgs) =>
             {
@@ -15,7 +16,8 @@ namespace MySeenParserBot
                     return null;
 
                 //var rm = new System.Resources.ResourceManager(GetType().Namespace + ".Properties.Resources", Assembly.GetExecutingAssembly());
-                var rm = new System.Resources.ResourceManager(typeof(Program).Namespace + ".Properties.Resources", Assembly.GetExecutingAssembly());
+                //var rm = new System.Resources.ResourceManager(typeof(Program).Namespace + ".Properties.Resources", Assembly.GetExecutingAssembly());
+                var rm = new System.Resources.ResourceManager(_namespace + ".Properties.Resources", Assembly.GetExecutingAssembly());
                 var bytes = (byte[])rm.GetObject(dllName);
                 return Assembly.Load(bytes);
             });
