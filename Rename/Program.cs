@@ -1,7 +1,8 @@
 ﻿Console.WriteLine("start");
 
-const string workDir = @"c:\COPY\Laguages\English\Курс-интенсив Запоминание 1000 иностранных слов за неделю\";
-string[] templates = new string[] {"[InfoViruS.BiZ] ","[SuperSliv.biz] ","[M1.Boominfo.ORG] ","[BOOMINFO.ORG] ","[SW.BAND] ","[InfoRai.NET] "};
+const string workDir = @"c:\_Cources\";
+string[] templates = new string[] {"[InfoViruS.BiZ] ","[SuperSliv.biz] ","[M1.Boominfo.ORG] ","[BOOMINFO.ORG] ","[SW.BAND] ","[InfoRai.NET] ","[InfoVolna.com] ",
+"[BOOMINFO.RU] ","[InfoBank.me] ","[SLIV.SITE] ","[SuperSliv.biz]_"};
 
 for(int i=0;i< templates.Length;i++)
 {
