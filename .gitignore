@@ -253,3 +253,5 @@ ModelManifest.xml
 /MySeenParserBot/MySeenParserBot/lib/HtmlAgilityPack.dll
 /MySeenParserBot/MySeenParserBot/lib/HtmlAgilityPack.CssSelectors.dll
 /stdcontrols/TelegramBots/MySeenParserBot/Secrets.cs
+VersionReader/*.so
+VersionReader/*.hnd
